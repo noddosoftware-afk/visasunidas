@@ -96,10 +96,10 @@ export function ServiceForm({ service }: { service: Service }) {
     <motion.form
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         const esOtra = paraQuien === "otra";
-        createSolicitud({
+        await createSolicitud({
           clienteNombre: esOtra ? personaNombre : contactoNombre,
           clienteTelefono: esOtra ? personaTelefono || contactoTelefono : contactoTelefono,
           clienteEmail: contactoEmail,

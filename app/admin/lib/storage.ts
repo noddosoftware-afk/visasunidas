@@ -1,59 +1,89 @@
+import { supabase } from "../../lib/supabaseClient";
 import { SERVICES } from "../../content";
-import { fasesIniciales, type Fase } from "./fases";
+import { fasesIniciales, type Fase, type FasesState } from "./fases";
 import { documentosIniciales } from "./documentos";
-import type { CategoriaArchivo } from "./archivos";
-import { deleteBlob, saveBlob } from "./idb";
-import type { Estado, Prioridad, Solicitud } from "./types";
+import type { DocumentoItem } from "./documentos";
+import type { Estado, HistorialEntry, NotaEntry, Prioridad, Solicitud } from "./types";
 
-const KEY = "visasunidas_solicitudes";
+const TABLE = "solicitudes";
 
-function normalize(s: Solicitud): Solicitud {
+interface SolicitudRow {
+  id: string;
+  folio: string;
+  cliente_nombre: string;
+  cliente_telefono: string;
+  cliente_email: string;
+  es_para_otra_persona: boolean;
+  contacto_nombre: string;
+  contacto_telefono: string;
+  contacto_email: string;
+  nacionalidad: Solicitud["nacionalidad"];
+  origen: Solicitud["origen"];
+  tramite_slug: string;
+  variante: string;
+  estado: Estado;
+  prioridad: Prioridad;
+  notas: string;
+  bitacora: NotaEntry[];
+  respuestas: Record<string, boolean | null>;
+  fases: FasesState;
+  documentos: DocumentoItem[];
+  historial: HistorialEntry[];
+  creado_en: string;
+  actualizado_en: string;
+}
+
+function rowToSolicitud(r: SolicitudRow): Solicitud {
   return {
-    ...s,
-    folio: s.folio ?? `VU-${s.id.slice(0, 4).toUpperCase()}`,
-    prioridad: s.prioridad ?? "Media",
-    bitacora: s.bitacora ?? [],
-    respuestas: s.respuestas ?? {},
-    fases: s.fases ?? fasesIniciales(),
-    documentos: s.documentos ?? documentosIniciales(s.tramiteSlug),
-    archivos: s.archivos ?? [],
-    esParaOtraPersona: s.esParaOtraPersona ?? false,
-    contactoNombre: s.contactoNombre ?? s.clienteNombre,
-    contactoTelefono: s.contactoTelefono ?? s.clienteTelefono,
-    contactoEmail: s.contactoEmail ?? s.clienteEmail,
-    nacionalidad: s.nacionalidad ?? "Mexicana",
-    origen: s.origen ?? "Panel",
+    id: r.id,
+    folio: r.folio,
+    clienteNombre: r.cliente_nombre,
+    clienteTelefono: r.cliente_telefono,
+    clienteEmail: r.cliente_email,
+    esParaOtraPersona: r.es_para_otra_persona,
+    contactoNombre: r.contacto_nombre,
+    contactoTelefono: r.contacto_telefono,
+    contactoEmail: r.contacto_email,
+    nacionalidad: r.nacionalidad,
+    origen: r.origen,
+    tramiteSlug: r.tramite_slug,
+    variante: r.variante,
+    estado: r.estado,
+    prioridad: r.prioridad,
+    notas: r.notas,
+    bitacora: r.bitacora ?? [],
+    respuestas: r.respuestas ?? {},
+    fases: r.fases ?? fasesIniciales(),
+    documentos: r.documentos ?? [],
+    creadoEn: r.creado_en,
+    actualizadoEn: r.actualizado_en,
+    historial: r.historial ?? [],
   };
 }
 
-function nextFolio(all: Solicitud[]): string {
-  return `VU-${String(all.length + 1).padStart(4, "0")}`;
+async function nextFolio(): Promise<string> {
+  const { count } = await supabase
+    .from(TABLE)
+    .select("*", { count: "exact", head: true });
+  return `VU-${String((count ?? 0) + 1).padStart(4, "0")}`;
 }
 
-function read(): Solicitud[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(KEY);
-    const parsed = raw ? (JSON.parse(raw) as Solicitud[]) : [];
-    return parsed.map(normalize);
-  } catch {
-    return [];
-  }
+export async function listSolicitudes(): Promise<Solicitud[]> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .order("actualizado_en", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map(rowToSolicitud);
 }
 
-function write(solicitudes: Solicitud[]) {
-  window.localStorage.setItem(KEY, JSON.stringify(solicitudes));
+export async function getSolicitud(id: string): Promise<Solicitud | undefined> {
+  const { data, error } = await supabase.from(TABLE).select("*").eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data ? rowToSolicitud(data) : undefined;
 }
 
-export function listSolicitudes(): Solicitud[] {
-  return read().sort((a, b) => b.actualizadoEn.localeCompare(a.actualizadoEn));
-}
-
-export function getSolicitud(id: string): Solicitud | undefined {
-  return read().find((s) => s.id === id);
-}
-
-export function createSolicitud(input: {
+export async function createSolicitud(input: {
   clienteNombre: string;
   clienteTelefono: string;
   clienteEmail: string;
@@ -67,169 +97,125 @@ export function createSolicitud(input: {
   contactoEmail?: string;
   nacionalidad?: Solicitud["nacionalidad"];
   origen?: Solicitud["origen"];
-}): Solicitud {
-  const all = read();
+}): Promise<Solicitud> {
+  const folio = await nextFolio();
   const now = new Date().toISOString();
-  const solicitud: Solicitud = {
-    id: crypto.randomUUID(),
-    folio: nextFolio(all),
-    ...input,
-    prioridad: input.prioridad ?? "Media",
-    esParaOtraPersona: input.esParaOtraPersona ?? false,
-    contactoNombre: input.contactoNombre ?? input.clienteNombre,
-    contactoTelefono: input.contactoTelefono ?? input.clienteTelefono,
-    contactoEmail: input.contactoEmail ?? input.clienteEmail,
+  const row = {
+    folio,
+    cliente_nombre: input.clienteNombre,
+    cliente_telefono: input.clienteTelefono,
+    cliente_email: input.clienteEmail,
+    es_para_otra_persona: input.esParaOtraPersona ?? false,
+    contacto_nombre: input.contactoNombre ?? input.clienteNombre,
+    contacto_telefono: input.contactoTelefono ?? input.clienteTelefono,
+    contacto_email: input.contactoEmail ?? input.clienteEmail,
     nacionalidad: input.nacionalidad ?? "Mexicana",
     origen: input.origen ?? "Panel",
-    estado: "Recibido",
+    tramite_slug: input.tramiteSlug,
+    variante: input.variante,
+    estado: "Recibido" as Estado,
+    prioridad: input.prioridad ?? "Media",
+    notas: input.notas,
     bitacora: [],
     respuestas: {},
     fases: fasesIniciales(),
     documentos: documentosIniciales(input.tramiteSlug),
-    archivos: [],
-    creadoEn: now,
-    actualizadoEn: now,
-    historial: [{ estado: "Recibido", fecha: now }],
+    historial: [{ estado: "Recibido" as Estado, fecha: now }],
   };
-  all.push(solicitud);
-  write(all);
-  return solicitud;
+  const { data, error } = await supabase.from(TABLE).insert(row).select().single();
+  if (error) throw error;
+  return rowToSolicitud(data);
 }
 
-export function updateEstado(id: string, estado: Estado, nota?: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
+export async function updateEstado(id: string, estado: Estado, nota?: string) {
+  const s = await getSolicitud(id);
+  if (!s) return;
   const now = new Date().toISOString();
-  all[idx].estado = estado;
-  all[idx].actualizadoEn = now;
-  all[idx].historial.push({ estado, fecha: now, nota });
-  write(all);
+  const historial = [...s.historial, { estado, fecha: now, nota }];
+  await supabase
+    .from(TABLE)
+    .update({ estado, historial, actualizado_en: now })
+    .eq("id", id);
 }
 
-export function updatePrioridad(id: string, prioridad: Prioridad) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  all[idx].prioridad = prioridad;
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
+export async function updatePrioridad(id: string, prioridad: Prioridad) {
+  await supabase
+    .from(TABLE)
+    .update({ prioridad, actualizado_en: new Date().toISOString() })
+    .eq("id", id);
 }
 
-export function updateNotas(id: string, notas: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  all[idx].notas = notas;
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
+export async function updateNotas(id: string, notas: string) {
+  await supabase
+    .from(TABLE)
+    .update({ notas, actualizado_en: new Date().toISOString() })
+    .eq("id", id);
 }
 
-export function addNota(id: string, texto: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
+export async function addNota(id: string, texto: string) {
+  const s = await getSolicitud(id);
+  if (!s) return;
   const now = new Date().toISOString();
-  all[idx].bitacora.push({ id: crypto.randomUUID(), fecha: now, texto });
-  all[idx].actualizadoEn = now;
-  write(all);
+  const bitacora = [...s.bitacora, { id: crypto.randomUUID(), fecha: now, texto }];
+  await supabase.from(TABLE).update({ bitacora, actualizado_en: now }).eq("id", id);
 }
 
-export function updateRespuesta(id: string, preguntaId: string, valor: boolean) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  all[idx].respuestas[preguntaId] = valor;
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
+export async function updateRespuesta(id: string, preguntaId: string, valor: boolean) {
+  const s = await getSolicitud(id);
+  if (!s) return;
+  const respuestas = { ...s.respuestas, [preguntaId]: valor };
+  await supabase
+    .from(TABLE)
+    .update({ respuestas, actualizado_en: new Date().toISOString() })
+    .eq("id", id);
 }
 
-export function toggleFase(id: string, fase: Fase) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  const actual = all[idx].fases[fase];
-  const completada = !actual.completada;
+export async function toggleFase(id: string, fase: Fase) {
+  const s = await getSolicitud(id);
+  if (!s) return;
   const now = new Date().toISOString();
-  all[idx].fases[fase] = { completada, fecha: completada ? now : null };
-  all[idx].actualizadoEn = now;
-  write(all);
+  const completada = !s.fases[fase].completada;
+  const fases = { ...s.fases, [fase]: { completada, fecha: completada ? now : null } };
+  await supabase.from(TABLE).update({ fases, actualizado_en: now }).eq("id", id);
 }
 
-export function toggleDocumento(id: string, docId: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  const docs = all[idx].documentos;
-  const docIdx = docs.findIndex((d) => d.id === docId);
+export async function toggleDocumento(id: string, docId: string) {
+  const s = await getSolicitud(id);
+  if (!s) return;
+  const docIdx = s.documentos.findIndex((d) => d.id === docId);
   if (docIdx === -1) return;
-  const recibido = !docs[docIdx].recibido;
   const now = new Date().toISOString();
-  docs[docIdx] = { ...docs[docIdx], recibido, fecha: recibido ? now : null };
-  all[idx].actualizadoEn = now;
-  write(all);
+  const recibido = !s.documentos[docIdx].recibido;
+  const documentos = [...s.documentos];
+  documentos[docIdx] = { ...documentos[docIdx], recibido, fecha: recibido ? now : null };
+  await supabase.from(TABLE).update({ documentos, actualizado_en: now }).eq("id", id);
 }
 
-export function addDocumentoPersonalizado(id: string, nombre: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  all[idx].documentos.push({
-    id: crypto.randomUUID(),
-    nombre,
-    recibido: false,
-    fecha: null,
-    personalizado: true,
-  });
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
+export async function addDocumentoPersonalizado(id: string, nombre: string) {
+  const s = await getSolicitud(id);
+  if (!s) return;
+  const documentos = [
+    ...s.documentos,
+    { id: crypto.randomUUID(), nombre, recibido: false, fecha: null, personalizado: true },
+  ];
+  await supabase
+    .from(TABLE)
+    .update({ documentos, actualizado_en: new Date().toISOString() })
+    .eq("id", id);
 }
 
-export function removeDocumentoPersonalizado(id: string, docId: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  all[idx].documentos = all[idx].documentos.filter(
-    (d) => d.id !== docId || !d.personalizado
-  );
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
+export async function removeDocumentoPersonalizado(id: string, docId: string) {
+  const s = await getSolicitud(id);
+  if (!s) return;
+  const documentos = s.documentos.filter((d) => d.id !== docId || !d.personalizado);
+  await supabase
+    .from(TABLE)
+    .update({ documentos, actualizado_en: new Date().toISOString() })
+    .eq("id", id);
 }
 
-export async function addArchivo(
-  id: string,
-  file: File,
-  categoria: CategoriaArchivo
-) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  const archivoId = crypto.randomUUID();
-  await saveBlob(archivoId, file);
-  all[idx].archivos.push({
-    id: archivoId,
-    nombre: file.name,
-    categoria,
-    tipo: file.type || "application/octet-stream",
-    tamano: file.size,
-    fecha: new Date().toISOString(),
-  });
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
-}
-
-export async function removeArchivo(id: string, archivoId: string) {
-  const all = read();
-  const idx = all.findIndex((s) => s.id === id);
-  if (idx === -1) return;
-  all[idx].archivos = all[idx].archivos.filter((a) => a.id !== archivoId);
-  all[idx].actualizadoEn = new Date().toISOString();
-  write(all);
-  await deleteBlob(archivoId);
-}
-
-export function deleteSolicitud(id: string) {
-  write(read().filter((s) => s.id !== id));
+export async function deleteSolicitud(id: string) {
+  await supabase.from(TABLE).delete().eq("id", id);
 }
 
 interface DemoCaso {
@@ -826,33 +812,90 @@ const DEMO_CASOS: DemoCaso[] = [
   },
 ];
 
-function sembrarCasosDemo() {
-  DEMO_CASOS.forEach((caso) => {
-    const s = createSolicitud(caso.input);
-    Object.entries(caso.respuestas).forEach(([preguntaId, valor]) =>
-      updateRespuesta(s.id, preguntaId, valor)
-    );
-    updateEstado(s.id, caso.estado);
-    caso.fasesCompletas.forEach((fase) => toggleFase(s.id, fase));
-    const recibidos = new Set(caso.documentosRecibidos ?? []);
-    const actual = getSolicitud(s.id);
-    actual?.documentos
-      .filter((d) => recibidos.has(d.nombre))
-      .forEach((d) => toggleDocumento(s.id, d.id));
-    if (caso.notaSeguimiento) addNota(s.id, caso.notaSeguimiento);
+function construirFilaDemo(caso: DemoCaso, folio: string) {
+  const now = new Date().toISOString();
+  const fases = fasesIniciales();
+  caso.fasesCompletas.forEach((f) => {
+    fases[f] = { completada: true, fecha: now };
   });
+
+  const documentos = documentosIniciales(caso.input.tramiteSlug);
+  const recibidos = new Set(caso.documentosRecibidos ?? []);
+  documentos.forEach((d) => {
+    if (recibidos.has(d.nombre)) {
+      d.recibido = true;
+      d.fecha = now;
+    }
+  });
+
+  const historial: HistorialEntry[] =
+    caso.estado === "Recibido"
+      ? [{ estado: "Recibido", fecha: now }]
+      : [
+          { estado: "Recibido", fecha: now },
+          { estado: caso.estado, fecha: now },
+        ];
+
+  const bitacora: NotaEntry[] = caso.notaSeguimiento
+    ? [{ id: crypto.randomUUID(), fecha: now, texto: caso.notaSeguimiento }]
+    : [];
+
+  return {
+    folio,
+    cliente_nombre: caso.input.clienteNombre,
+    cliente_telefono: caso.input.clienteTelefono,
+    cliente_email: caso.input.clienteEmail,
+    es_para_otra_persona: caso.input.esParaOtraPersona ?? false,
+    contacto_nombre: caso.input.contactoNombre ?? caso.input.clienteNombre,
+    contacto_telefono: caso.input.contactoTelefono ?? caso.input.clienteTelefono,
+    contacto_email: caso.input.contactoEmail ?? caso.input.clienteEmail,
+    nacionalidad: caso.input.nacionalidad ?? "Mexicana",
+    origen: caso.input.origen ?? "Panel",
+    tramite_slug: caso.input.tramiteSlug,
+    variante: caso.input.variante,
+    estado: caso.estado,
+    prioridad: caso.input.prioridad ?? "Media",
+    notas: caso.input.notas,
+    bitacora,
+    respuestas: caso.respuestas,
+    fases,
+    documentos,
+    historial,
+    creado_en: now,
+    actualizado_en: now,
+  };
 }
 
-export function seedDemoData() {
-  if (read().length > 0) return;
-  sembrarCasosDemo();
+async function sembrarCasosDemo() {
+  const filas = DEMO_CASOS.map((caso, i) =>
+    construirFilaDemo(caso, `VU-${String(i + 1).padStart(4, "0")}`)
+  );
+  const { error } = await supabase.from(TABLE).insert(filas);
+  if (error) throw error;
+}
+
+let seedingPromise: Promise<void> | null = null;
+
+/** Protegido contra llamadas concurrentes (ej. doble efecto de React
+ * StrictMode en desarrollo) para no sembrar los casos de ejemplo dos veces. */
+export function seedDemoData(): Promise<void> {
+  if (seedingPromise) return seedingPromise;
+  seedingPromise = (async () => {
+    const { count } = await supabase.from(TABLE).select("*", { count: "exact", head: true });
+    if ((count ?? 0) > 0) return;
+    await sembrarCasosDemo();
+  })().finally(() => {
+    seedingPromise = null;
+  });
+  return seedingPromise;
 }
 
 /** Borra TODAS las solicitudes actuales (incluidas las reales capturadas)
  * y vuelve a cargar únicamente los casos de ejemplo. Acción irreversible. */
-export function resetDemoData() {
-  write([]);
-  sembrarCasosDemo();
+export async function resetDemoData() {
+  const { error: delErr } = await supabase.from(TABLE).delete().neq("id", "00000000-0000-0000-0000-000000000000");
+  if (delErr) throw delErr;
+  await sembrarCasosDemo();
 }
 
 export function tramiteLabel(slug: string): string {

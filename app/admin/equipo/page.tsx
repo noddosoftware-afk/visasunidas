@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   correoExiste,
@@ -44,10 +44,10 @@ function iniciales(nombre: string) {
 
 export default function Equipo() {
   const currentUserId = getCurrentUserId();
-  const currentUser = currentUserId ? getUserById(currentUserId) : undefined;
+  const [currentUser, setCurrentUser] = useState<AdminUser | undefined>(undefined);
   const esAdmin = currentUser?.rol === "Administrador";
 
-  const [users, setUsers] = useState<AdminUser[]>(() => listUsers());
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [codigoAcceso, setCodigoAcceso] = useState("");
@@ -55,7 +55,13 @@ export default function Equipo() {
   const [error, setError] = useState("");
   const [confirmarApagar, setConfirmarApagar] = useState<AdminUser | null>(null);
 
-  const reload = () => setUsers(listUsers());
+  const reload = () => listUsers().then(setUsers);
+
+  useEffect(() => {
+    reload();
+    if (currentUserId) getUserById(currentUserId).then(setCurrentUser);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="max-w-3xl">
@@ -78,17 +84,17 @@ export default function Equipo() {
       <motion.form
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           if (!nombre || !correo || !codigoAcceso) {
             setError("Completa nombre, correo y código.");
             return;
           }
-          if (correoExiste(correo)) {
+          if (await correoExiste(correo)) {
             setError("Ese correo ya tiene acceso.");
             return;
           }
-          createUser({ nombre, correo, codigoAcceso, rol });
+          await createUser({ nombre, correo, codigoAcceso, rol });
           reload();
           setNombre("");
           setCorreo("");
@@ -200,8 +206,8 @@ export default function Equipo() {
                   {esAdmin ? (
                     <select
                       value={u.rol}
-                      onChange={(e) => {
-                        updateRol(u.id, e.target.value as Rol);
+                      onChange={async (e) => {
+                        await updateRol(u.id, e.target.value as Rol);
                         reload();
                       }}
                       className={`rounded-full border-0 px-2.5 py-1 text-[12px] font-medium outline-none ${ROL_STYLE[u.rol]}`}
@@ -231,12 +237,12 @@ export default function Equipo() {
                     checked={u.activo}
                     disabled={!esAdmin}
                     activeColor="bg-emerald-500"
-                    onChange={(next) => {
+                    onChange={async (next) => {
                       if (!next) {
                         setConfirmarApagar(u);
                         return;
                       }
-                      setActivo(u.id, true);
+                      await setActivo(u.id, true);
                       reload();
                     }}
                   />
@@ -246,8 +252,8 @@ export default function Equipo() {
                     checked={u.pausado}
                     disabled={!esAdmin}
                     activeColor="bg-gold"
-                    onChange={(next) => {
-                      setPausado(u.id, next);
+                    onChange={async (next) => {
+                      await setPausado(u.id, next);
                       reload();
                     }}
                   />
@@ -255,9 +261,9 @@ export default function Equipo() {
                 <td className="px-5 py-3 text-right">
                   {users.length > 1 && (
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         if (confirm(`¿Quitar acceso a ${u.nombre}?`)) {
-                          deleteUser(u.id);
+                          await deleteUser(u.id);
                           reload();
                         }
                       }}
@@ -312,8 +318,8 @@ export default function Equipo() {
                   Cancelar
                 </button>
                 <button
-                  onClick={() => {
-                    setActivo(confirmarApagar.id, false);
+                  onClick={async () => {
+                    await setActivo(confirmarApagar.id, false);
                     reload();
                     setConfirmarApagar(null);
                   }}

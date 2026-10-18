@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import type { Solicitud } from "../lib/types";
 import {
   createEvento,
   deleteEvento,
@@ -35,8 +36,8 @@ export default function Calendario() {
   const hoy = new Date();
   const [cursor, setCursor] = useState({ year: hoy.getFullYear(), month: hoy.getMonth() });
   const [seleccionado, setSeleccionado] = useState(toDateKey(hoy));
-  const [eventos, setEventos] = useState<Evento[]>(() => listEventos());
-  const solicitudes = useMemo(() => listSolicitudes(), []);
+  const [eventos, setEventos] = useState<Evento[]>([]);
+  const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
 
   const [tipo, setTipo] = useState<TipoEvento>("Llamada");
   const [hora, setHora] = useState("");
@@ -44,7 +45,12 @@ export default function Calendario() {
   const [nota, setNota] = useState("");
   const [solicitudId, setSolicitudId] = useState("");
 
-  const reload = () => setEventos(listEventos());
+  const reload = () => listEventos().then(setEventos);
+
+  useEffect(() => {
+    reload();
+    listSolicitudes().then(setSolicitudes);
+  }, []);
 
   const eventosDelDia = eventos.filter((e) => e.fecha === seleccionado);
   const proximos = eventos.filter((e) => e.fecha >= toDateKey(hoy)).slice(0, 6);
@@ -124,10 +130,10 @@ export default function Calendario() {
             </p>
 
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 if (!titulo.trim()) return;
-                createEvento({
+                await createEvento({
                   fecha: seleccionado,
                   hora,
                   tipo,
@@ -215,8 +221,8 @@ export default function Calendario() {
                     </div>
                   </div>
                   <button
-                    onClick={() => {
-                      deleteEvento(e.id);
+                    onClick={async () => {
+                      await deleteEvento(e.id);
                       reload();
                     }}
                     className="text-ink/30 hover:text-rose"

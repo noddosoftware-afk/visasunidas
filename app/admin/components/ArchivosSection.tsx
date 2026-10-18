@@ -1,42 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  addArchivo,
   CATEGORIAS_ARCHIVO,
   formatoTamano,
+  getArchivoUrl,
+  listArchivos,
+  removeArchivo,
   type ArchivoItem,
   type CategoriaArchivo,
 } from "../lib/archivos";
-import { readBlob } from "../lib/idb";
-import { addArchivo, removeArchivo } from "../lib/storage";
 import { Section } from "./Section";
 import { IconDownload, IconFileText, IconTrash, IconUpload } from "./Icons";
 
-export function ArchivosSection({
-  solicitudId,
-  archivos,
-  onChange,
-}: {
-  solicitudId: string;
-  archivos: ArchivoItem[];
-  onChange: () => void;
-}) {
+export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
+  const [archivos, setArchivos] = useState<ArchivoItem[]>([]);
   const [categoria, setCategoria] = useState<CategoriaArchivo>(CATEGORIAS_ARCHIVO[0]);
   const [subiendo, setSubiendo] = useState(false);
+
+  const reload = () => listArchivos(solicitudId).then(setArchivos);
+
+  useEffect(() => {
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solicitudId]);
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
     setSubiendo(true);
     await addArchivo(solicitudId, file, categoria);
     setSubiendo(false);
-    onChange();
+    reload();
   }
 
   async function handleVer(archivo: ArchivoItem) {
-    const blob = await readBlob(archivo.id);
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
-    setTimeout(() => URL.revokeObjectURL(url), 30_000);
+    const url = await getArchivoUrl(archivo.storagePath);
+    if (url) window.open(url, "_blank");
   }
 
   return (
@@ -108,8 +107,8 @@ export function ArchivosSection({
               <button
                 onClick={async () => {
                   if (confirm(`¿Eliminar "${a.nombre}"?`)) {
-                    await removeArchivo(solicitudId, a.id);
-                    onChange();
+                    await removeArchivo(solicitudId, a);
+                    reload();
                   }
                 }}
                 className="flex items-center gap-1 text-[13px] font-medium text-rose hover:underline"

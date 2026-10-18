@@ -40,9 +40,9 @@ export default function NuevaSolicitud() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          const s = createSolicitud({
+          const s = await createSolicitud({
             clienteNombre,
             clienteTelefono,
             clienteEmail,

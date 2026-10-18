@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { SERVICES } from "../../content";
 import { ESTADOS, PRIORIDADES, type Estado, type Prioridad, type Solicitud } from "../lib/types";
@@ -44,13 +44,20 @@ export default function SolicitudDetalle({
 }) {
   const { id } = use(params);
   const router = useRouter();
-  const [solicitud, setSolicitud] = useState<Solicitud | null>(
-    () => getSolicitud(id) ?? null
-  );
+  const [solicitud, setSolicitud] = useState<Solicitud | null | undefined>(undefined);
   const [nuevaNota, setNuevaNota] = useState("");
   const [nuevoDocumento, setNuevoDocumento] = useState("");
 
-  const reload = () => setSolicitud(getSolicitud(id) ?? null);
+  const reload = () => getSolicitud(id).then((s) => setSolicitud(s ?? null));
+
+  useEffect(() => {
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  if (solicitud === undefined) {
+    return <div className="text-ink/40">Cargando solicitud...</div>;
+  }
 
   if (solicitud === null) {
     return (
@@ -147,8 +154,8 @@ export default function SolicitudDetalle({
               </label>
               <select
                 value={solicitud.estado}
-                onChange={(e) => {
-                  updateEstado(id, e.target.value as Estado);
+                onChange={async (e) => {
+                  await updateEstado(id, e.target.value as Estado);
                   reload();
                 }}
                 className="rounded-xl border border-ink/15 px-3 py-2 text-sm transition-colors hover:border-ink/25"
@@ -167,8 +174,8 @@ export default function SolicitudDetalle({
               </label>
               <select
                 value={solicitud.prioridad}
-                onChange={(e) => {
-                  updatePrioridad(id, e.target.value as Prioridad);
+                onChange={async (e) => {
+                  await updatePrioridad(id, e.target.value as Prioridad);
                   reload();
                 }}
                 className="rounded-xl border border-ink/15 px-3 py-2 text-sm transition-colors hover:border-ink/25"
@@ -207,8 +214,8 @@ export default function SolicitudDetalle({
                     <input
                       type="checkbox"
                       checked={progreso.completada}
-                      onChange={() => {
-                        toggleFase(id, fase);
+                      onChange={async () => {
+                        await toggleFase(id, fase);
                         reload();
                       }}
                       className="h-4 w-4 accent-brand"
@@ -257,8 +264,8 @@ export default function SolicitudDetalle({
                   <input
                     type="checkbox"
                     checked={doc.recibido}
-                    onChange={() => {
-                      toggleDocumento(id, doc.id);
+                    onChange={async () => {
+                      await toggleDocumento(id, doc.id);
                       reload();
                     }}
                     className="h-4 w-4 accent-gold"
@@ -284,8 +291,8 @@ export default function SolicitudDetalle({
                   )}
                   {doc.personalizado && (
                     <button
-                      onClick={() => {
-                        removeDocumentoPersonalizado(id, doc.id);
+                      onClick={async () => {
+                        await removeDocumentoPersonalizado(id, doc.id);
                         reload();
                       }}
                       className="text-[12px] text-rose hover:underline"
@@ -304,10 +311,10 @@ export default function SolicitudDetalle({
           </ul>
 
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
               if (!nuevoDocumento.trim()) return;
-              addDocumentoPersonalizado(id, nuevoDocumento.trim());
+              await addDocumentoPersonalizado(id, nuevoDocumento.trim());
               setNuevoDocumento("");
               reload();
             }}
@@ -325,11 +332,7 @@ export default function SolicitudDetalle({
           </form>
         </Section>
 
-        <ArchivosSection
-          solicitudId={id}
-          archivos={solicitud.archivos}
-          onChange={reload}
-        />
+        <ArchivosSection solicitudId={id} />
 
         <Section
           icon={<IconShieldCheck />}
@@ -359,8 +362,8 @@ export default function SolicitudDetalle({
                       <motion.button
                         key={opt.label}
                         whileTap={{ scale: 0.93 }}
-                        onClick={() => {
-                          updateRespuesta(id, p.id, opt.val);
+                        onClick={async () => {
+                          await updateRespuesta(id, p.id, opt.val);
                           reload();
                         }}
                         className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
@@ -404,10 +407,10 @@ export default function SolicitudDetalle({
           }
         >
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
               if (!nuevaNota.trim()) return;
-              addNota(id, nuevaNota.trim());
+              await addNota(id, nuevaNota.trim());
               setNuevaNota("");
               reload();
             }}
@@ -465,9 +468,9 @@ export default function SolicitudDetalle({
         <PanelButton
           variant="danger"
           className="w-full py-2.5"
-          onClick={() => {
+          onClick={async () => {
             if (confirm("¿Eliminar esta solicitud? Esta acción no se puede deshacer.")) {
-              deleteSolicitud(id);
+              await deleteSolicitud(id);
               router.push("/admin");
             }
           }}

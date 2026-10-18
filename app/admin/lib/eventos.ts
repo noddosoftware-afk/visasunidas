@@ -1,3 +1,5 @@
+import { supabase } from "../../lib/supabaseClient";
+
 export const TIPOS_EVENTO = ["Llamada", "Cita", "Otro"] as const;
 
 export type TipoEvento = (typeof TIPOS_EVENTO)[number];
@@ -13,58 +15,84 @@ export interface Evento {
   creadoEn: string;
 }
 
-const KEY = "visasunidas_eventos";
-
-function read(): Evento[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as Evento[]) : [];
-  } catch {
-    return [];
-  }
+interface EventoRow {
+  id: string;
+  fecha: string;
+  hora: string;
+  tipo: TipoEvento;
+  titulo: string;
+  nota: string;
+  solicitud_id: string | null;
+  creado_en: string;
 }
 
-function write(eventos: Evento[]) {
-  window.localStorage.setItem(KEY, JSON.stringify(eventos));
+const TABLE = "eventos";
+
+function rowToEvento(r: EventoRow): Evento {
+  return {
+    id: r.id,
+    fecha: r.fecha,
+    hora: r.hora,
+    tipo: r.tipo,
+    titulo: r.titulo,
+    nota: r.nota,
+    solicitudId: r.solicitud_id,
+    creadoEn: r.creado_en,
+  };
 }
 
-export function listEventos(): Evento[] {
-  return read().sort((a, b) =>
-    (a.fecha + a.hora).localeCompare(b.fecha + b.hora)
-  );
+export async function listEventos(): Promise<Evento[]> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .order("fecha", { ascending: true })
+    .order("hora", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(rowToEvento);
 }
 
-export function eventosPorFecha(fecha: string): Evento[] {
-  return listEventos().filter((e) => e.fecha === fecha);
+export async function eventosPorFecha(fecha: string): Promise<Evento[]> {
+  const { data, error } = await supabase.from(TABLE).select("*").eq("fecha", fecha);
+  if (error) throw error;
+  return (data ?? []).map(rowToEvento);
 }
 
-export function eventosPorSolicitud(solicitudId: string): Evento[] {
-  return listEventos().filter((e) => e.solicitudId === solicitudId);
+export async function eventosPorSolicitud(solicitudId: string): Promise<Evento[]> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .eq("solicitud_id", solicitudId)
+    .order("fecha", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(rowToEvento);
 }
 
-export function createEvento(input: {
+export async function createEvento(input: {
   fecha: string;
   hora: string;
   tipo: TipoEvento;
   titulo: string;
   nota: string;
   solicitudId?: string | null;
-}): Evento {
-  const evento: Evento = {
-    id: crypto.randomUUID(),
-    solicitudId: null,
-    ...input,
-    creadoEn: new Date().toISOString(),
-  };
-  const all = read();
-  all.push(evento);
-  write(all);
-  return evento;
+}): Promise<Evento> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .insert({
+      fecha: input.fecha,
+      hora: input.hora,
+      tipo: input.tipo,
+      titulo: input.titulo,
+      nota: input.nota,
+      solicitud_id: input.solicitudId ?? null,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return rowToEvento(data);
 }
 
-export function deleteEvento(id: string) {
-  write(read().filter((e) => e.id !== id));
+export async function deleteEvento(id: string) {
+  await supabase.from(TABLE).delete().eq("id", id);
 }
 
 export function toDateKey(d: Date): string {

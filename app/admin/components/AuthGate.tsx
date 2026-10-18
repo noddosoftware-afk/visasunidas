@@ -36,9 +36,9 @@ export function AuthGate({ children }: { children: ReactNode }) {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            const user = findUser(correo, codigo);
+            const user = await findUser(correo, codigo);
             if (!user) {
               setError("Correo o código incorrecto.");
             } else if (!user.activo) {
@@ -98,10 +98,10 @@ export function AuthGate({ children }: { children: ReactNode }) {
             Entrar
           </PanelButton>
           <p className="mt-4 text-[12px] leading-relaxed text-ink/40">
-            Acceso de ejemplo: admin@visasunidas.com / visasunidas2026.
-            Prototipo local: este acceso no es seguro para producción. Al
-            conectar una base de datos real, sustituir por autenticación
-            propia (ej. Supabase Auth).
+            Acceso de ejemplo: admin@visasunidas.com / visasunidas2026. Los
+            datos ya viven en una base de datos real (Supabase), pero este
+            login sigue siendo propio del panel, no Supabase Auth — para
+            producción conviene reforzarlo con autenticación real.
           </p>
         </motion.form>
       </div>

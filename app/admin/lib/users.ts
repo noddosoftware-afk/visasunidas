@@ -1,3 +1,5 @@
+import { supabase } from "../../lib/supabaseClient";
+
 export const ROLES = ["Administrador", "Asesor legal", "Recepción"] as const;
 
 export type Rol = (typeof ROLES)[number];
@@ -13,110 +15,115 @@ export interface AdminUser {
   creadoEn: string;
 }
 
-const KEY = "visasunidas_admin_users";
+interface AdminUserRow {
+  id: string;
+  nombre: string;
+  correo: string;
+  codigo_acceso: string;
+  rol: Rol;
+  activo: boolean;
+  pausado: boolean;
+  creado_en: string;
+}
+
+const TABLE = "admin_users";
 export const SESSION_KEY = "visasunidas_admin_session_user";
 
-function read(): AdminUser[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(KEY);
-    const parsed = raw ? (JSON.parse(raw) as AdminUser[]) : [];
-    return parsed.map((u) => ({
-      ...u,
-      rol: u.rol ?? "Recepción",
-      activo: u.activo ?? true,
-      pausado: u.pausado ?? false,
-    }));
-  } catch {
-    return [];
-  }
+function rowToUser(r: AdminUserRow): AdminUser {
+  return {
+    id: r.id,
+    nombre: r.nombre,
+    correo: r.correo,
+    codigoAcceso: r.codigo_acceso,
+    rol: r.rol,
+    activo: r.activo,
+    pausado: r.pausado,
+    creadoEn: r.creado_en,
+  };
 }
 
-function write(users: AdminUser[]) {
-  window.localStorage.setItem(KEY, JSON.stringify(users));
+export async function seedDefaultUser() {
+  const { count } = await supabase.from(TABLE).select("*", { count: "exact", head: true });
+  if ((count ?? 0) > 0) return;
+  await supabase.from(TABLE).insert({
+    nombre: "Administrador",
+    correo: "admin@visasunidas.com",
+    codigo_acceso: "visasunidas2026",
+    rol: "Administrador",
+    activo: true,
+    pausado: false,
+  });
 }
 
-export function seedDefaultUser() {
-  if (typeof window === "undefined" || read().length > 0) return;
-  write([
-    {
-      id: crypto.randomUUID(),
-      nombre: "Administrador",
-      correo: "admin@visasunidas.com",
-      codigoAcceso: "visasunidas2026",
-      rol: "Administrador",
-      activo: true,
-      pausado: false,
-      creadoEn: new Date().toISOString(),
-    },
-  ]);
+export async function listUsers(): Promise<AdminUser[]> {
+  const { data, error } = await supabase.from(TABLE).select("*").order("creado_en", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map(rowToUser);
 }
 
-export function listUsers(): AdminUser[] {
-  return read().sort((a, b) => a.creadoEn.localeCompare(b.creadoEn));
+export async function getUserById(id: string): Promise<AdminUser | undefined> {
+  const { data, error } = await supabase.from(TABLE).select("*").eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data ? rowToUser(data) : undefined;
 }
 
-export function getUserById(id: string): AdminUser | undefined {
-  return read().find((u) => u.id === id);
-}
-
-export function findUser(correo: string, codigoAcceso: string): AdminUser | undefined {
+export async function findUser(correo: string, codigoAcceso: string): Promise<AdminUser | undefined> {
   const correoNorm = correo.trim().toLowerCase();
-  return read().find(
-    (u) => u.correo.toLowerCase() === correoNorm && u.codigoAcceso === codigoAcceso
-  );
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .ilike("correo", correoNorm)
+    .eq("codigo_acceso", codigoAcceso)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? rowToUser(data) : undefined;
 }
 
-export function correoExiste(correo: string): boolean {
+export async function correoExiste(correo: string): Promise<boolean> {
   const correoNorm = correo.trim().toLowerCase();
-  return read().some((u) => u.correo.toLowerCase() === correoNorm);
+  const { count } = await supabase
+    .from(TABLE)
+    .select("*", { count: "exact", head: true })
+    .ilike("correo", correoNorm);
+  return (count ?? 0) > 0;
 }
 
-export function createUser(input: {
+export async function createUser(input: {
   nombre: string;
   correo: string;
   codigoAcceso: string;
   rol: Rol;
-}): AdminUser {
-  const user: AdminUser = {
-    id: crypto.randomUUID(),
-    ...input,
-    activo: true,
-    pausado: false,
-    creadoEn: new Date().toISOString(),
-  };
-  const all = read();
-  all.push(user);
-  write(all);
-  return user;
+}): Promise<AdminUser> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .insert({
+      nombre: input.nombre,
+      correo: input.correo,
+      codigo_acceso: input.codigoAcceso,
+      rol: input.rol,
+      activo: true,
+      pausado: false,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return rowToUser(data);
 }
 
-export function updateRol(id: string, rol: Rol) {
-  const all = read();
-  const idx = all.findIndex((u) => u.id === id);
-  if (idx === -1) return;
-  all[idx].rol = rol;
-  write(all);
+export async function updateRol(id: string, rol: Rol) {
+  await supabase.from(TABLE).update({ rol }).eq("id", id);
 }
 
-export function setActivo(id: string, activo: boolean) {
-  const all = read();
-  const idx = all.findIndex((u) => u.id === id);
-  if (idx === -1) return;
-  all[idx].activo = activo;
-  write(all);
+export async function setActivo(id: string, activo: boolean) {
+  await supabase.from(TABLE).update({ activo }).eq("id", id);
 }
 
-export function setPausado(id: string, pausado: boolean) {
-  const all = read();
-  const idx = all.findIndex((u) => u.id === id);
-  if (idx === -1) return;
-  all[idx].pausado = pausado;
-  write(all);
+export async function setPausado(id: string, pausado: boolean) {
+  await supabase.from(TABLE).update({ pausado }).eq("id", id);
 }
 
-export function deleteUser(id: string) {
-  write(read().filter((u) => u.id !== id));
+export async function deleteUser(id: string) {
+  await supabase.from(TABLE).delete().eq("id", id);
 }
 
 export function getCurrentUserId(): string | null {

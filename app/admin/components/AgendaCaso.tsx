@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createEvento,
   deleteEvento,
@@ -19,15 +19,18 @@ const TIPO_BADGE: Record<TipoEvento, string> = {
 };
 
 export function AgendaCaso({ solicitudId }: { solicitudId: string }) {
-  const [eventos, setEventos] = useState<Evento[]>(() =>
-    eventosPorSolicitud(solicitudId)
-  );
+  const [eventos, setEventos] = useState<Evento[]>([]);
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState("");
   const [tipo, setTipo] = useState<TipoEvento>("Llamada");
   const [titulo, setTitulo] = useState("");
 
-  const reload = () => setEventos(eventosPorSolicitud(solicitudId));
+  const reload = () => eventosPorSolicitud(solicitudId).then(setEventos);
+
+  useEffect(() => {
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solicitudId]);
 
   return (
     <Section
@@ -42,10 +45,10 @@ export function AgendaCaso({ solicitudId }: { solicitudId: string }) {
       }
     >
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           if (!fecha || !titulo.trim()) return;
-          createEvento({
+          await createEvento({
             fecha,
             hora,
             tipo,
@@ -115,8 +118,8 @@ export function AgendaCaso({ solicitudId }: { solicitudId: string }) {
               <span className="text-[13px] text-ink/80">{e.titulo}</span>
             </div>
             <button
-              onClick={() => {
-                deleteEvento(e.id);
+              onClick={async () => {
+                await deleteEvento(e.id);
                 reload();
               }}
               className="text-ink/30 hover:text-rose"

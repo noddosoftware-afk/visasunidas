@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { SERVICES } from "../content";
 import { ESTADOS, PRIORIDADES, type Estado, type Prioridad, type Solicitud } from "./lib/types";
@@ -30,10 +30,23 @@ const PRIORIDAD_ACCENT: Record<Prioridad, string> = {
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [solicitudes, setSolicitudes] = useState<Solicitud[]>(() => {
-    seedDemoData();
-    return listSolicitudes();
-  });
+  const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    let activo = true;
+    (async () => {
+      await seedDemoData();
+      const datos = await listSolicitudes();
+      if (activo) {
+        setSolicitudes(datos);
+        setCargando(false);
+      }
+    })();
+    return () => {
+      activo = false;
+    };
+  }, []);
   const [tramiteFiltro, setTramiteFiltro] = useState("todos");
   const [estadoFiltro, setEstadoFiltro] = useState<Estado | "todos">("todos");
   const [prioridadFiltro, setPrioridadFiltro] = useState<Prioridad | "todos">(
@@ -108,15 +121,17 @@ export default function AdminDashboard() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => {
+            onClick={async () => {
               if (
                 confirm(
                   "Esto borrará TODAS las solicitudes actuales (incluidas las reales capturadas desde el sitio) y las reemplazará solo con los casos de ejemplo. ¿Continuar?"
                 )
               ) {
-                resetDemoData();
-                setSolicitudes(listSolicitudes());
+                setCargando(true);
+                await resetDemoData();
+                setSolicitudes(await listSolicitudes());
                 setPagina(1);
+                setCargando(false);
               }
             }}
             className="text-[13px] font-medium text-ink/40 underline-offset-2 hover:text-rose hover:underline"
@@ -235,7 +250,14 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {visibles.map((s, i) => (
+            {cargando && (
+              <tr>
+                <td colSpan={10} className="px-5 py-14 text-center text-ink/40">
+                  Cargando solicitudes...
+                </td>
+              </tr>
+            )}
+            {!cargando && visibles.map((s, i) => (
               <motion.tr
                 key={s.id}
                 initial={{ opacity: 0 }}
@@ -280,7 +302,7 @@ export default function AdminDashboard() {
                 </td>
               </motion.tr>
             ))}
-            {visibles.length === 0 && (
+            {!cargando && visibles.length === 0 && (
               <tr>
                 <td colSpan={10} className="px-5 py-14 text-center text-ink/40">
                   <div className="flex flex-col items-center gap-2">

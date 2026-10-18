@@ -1,6 +1,5 @@
 import type { FasesState } from "./fases";
 import type { DocumentoItem } from "./documentos";
-import type { ArchivoItem } from "./archivos";
 import type { Nacionalidad } from "../../lib/nacionalidad";
 
 export const ESTADOS = [
@@ -51,7 +50,6 @@ export interface Solicitud {
   respuestas: Record<string, boolean | null>;
   fases: FasesState;
   documentos: DocumentoItem[];
-  archivos: ArchivoItem[];
   creadoEn: string;
   actualizadoEn: string;
   historial: HistorialEntry[];

@@ -92,10 +92,10 @@ export function ContactCTA() {
             </motion.div>
           ) : (
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 const esOtra = paraQuien === "otra";
-                createSolicitud({
+                await createSolicitud({
                   clienteNombre: esOtra ? personaNombre : contactoNombre,
                   clienteTelefono: esOtra
                     ? personaTelefono || contactoTelefono
