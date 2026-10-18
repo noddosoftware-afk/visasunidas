@@ -1,0 +1,130 @@
+"use client";
+import { useState } from "react";
+import {
+  CATEGORIAS_ARCHIVO,
+  formatoTamano,
+  type ArchivoItem,
+  type CategoriaArchivo,
+} from "../lib/archivos";
+import { readBlob } from "../lib/idb";
+import { addArchivo, removeArchivo } from "../lib/storage";
+import { Section } from "./Section";
+import { IconDownload, IconFileText, IconTrash, IconUpload } from "./Icons";
+
+export function ArchivosSection({
+  solicitudId,
+  archivos,
+  onChange,
+}: {
+  solicitudId: string;
+  archivos: ArchivoItem[];
+  onChange: () => void;
+}) {
+  const [categoria, setCategoria] = useState<CategoriaArchivo>(CATEGORIAS_ARCHIVO[0]);
+  const [subiendo, setSubiendo] = useState(false);
+
+  async function handleFile(file: File | undefined) {
+    if (!file) return;
+    setSubiendo(true);
+    await addArchivo(solicitudId, file, categoria);
+    setSubiendo(false);
+    onChange();
+  }
+
+  async function handleVer(archivo: ArchivoItem) {
+    const blob = await readBlob(archivo.id);
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+    setTimeout(() => URL.revokeObjectURL(url), 30_000);
+  }
+
+  return (
+    <Section
+      icon={<IconFileText />}
+      title="Archivos del expediente"
+      subtitle="Sube actas, RFC, CURP, pasaporte, INE y demás documentos digitalizados de este cliente."
+      tone="brand"
+      right={
+        <span className="rounded-full bg-ink/6 px-2.5 py-1 text-[12px] text-ink/50">
+          {archivos.length}
+        </span>
+      }
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <select
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value as CategoriaArchivo)}
+          className="rounded-xl border border-ink/15 px-3 py-2 text-sm"
+        >
+          {CATEGORIAS_ARCHIVO.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+
+        <label className="flex cursor-pointer items-center gap-2 rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.03]">
+          <IconUpload className="h-4 w-4" />
+          {subiendo ? "Subiendo..." : "Subir archivo"}
+          <input
+            type="file"
+            className="hidden"
+            disabled={subiendo}
+            onChange={(e) => {
+              handleFile(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
+        </label>
+      </div>
+
+      <ul className="mt-4 space-y-2">
+        {archivos.map((a) => (
+          <li
+            key={a.id}
+            className="flex items-center justify-between gap-4 rounded-xl border border-ink/8 px-4 py-3"
+          >
+            <div className="flex items-center gap-3 overflow-hidden">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+                <IconFileText className="h-4 w-4" />
+              </span>
+              <div className="truncate">
+                <p className="truncate text-sm font-medium text-ink">{a.nombre}</p>
+                <p className="text-[12px] text-ink/45">
+                  {a.categoria} · {formatoTamano(a.tamano)} ·{" "}
+                  {new Date(a.fecha).toLocaleDateString("es-MX")}
+                </p>
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center gap-3">
+              <button
+                onClick={() => handleVer(a)}
+                className="flex items-center gap-1 text-[13px] font-medium text-brand hover:underline"
+              >
+                <IconDownload className="h-3.5 w-3.5" />
+                Ver
+              </button>
+              <button
+                onClick={async () => {
+                  if (confirm(`¿Eliminar "${a.nombre}"?`)) {
+                    await removeArchivo(solicitudId, a.id);
+                    onChange();
+                  }
+                }}
+                className="flex items-center gap-1 text-[13px] font-medium text-rose hover:underline"
+              >
+                <IconTrash className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </li>
+        ))}
+        {archivos.length === 0 && (
+          <li className="text-sm text-ink/40">
+            Sin archivos subidos todavía.
+          </li>
+        )}
+      </ul>
+    </Section>
+  );
+}
