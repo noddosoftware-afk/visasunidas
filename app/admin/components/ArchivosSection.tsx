@@ -45,7 +45,7 @@ export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
       subtitle="Sube actas, RFC, CURP, pasaporte, INE y demás documentos digitalizados de este cliente."
       tone="brand"
       right={
-        <span className="rounded-full bg-ink/6 px-2.5 py-1 text-[12px] text-ink/50">
+        <span className="rounded-full bg-white/8 px-2.5 py-1 text-[12px] text-white/45">
           {archivos.length}
         </span>
       }
@@ -54,7 +54,7 @@ export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value as CategoriaArchivo)}
-          className="rounded-xl border border-ink/15 px-3 py-2 text-sm"
+          className="rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm"
         >
           {CATEGORIAS_ARCHIVO.map((c) => (
             <option key={c} value={c}>
@@ -82,15 +82,15 @@ export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
         {archivos.map((a) => (
           <li
             key={a.id}
-            className="flex items-center justify-between gap-4 rounded-xl border border-ink/8 px-4 py-3"
+            className="flex items-center justify-between gap-4 rounded-xl border border-white/8 px-4 py-3"
           >
             <div className="flex items-center gap-3 overflow-hidden">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-[#9ba0ff]">
                 <IconFileText className="h-4 w-4" />
               </span>
               <div className="truncate">
-                <p className="truncate text-sm font-medium text-ink">{a.nombre}</p>
-                <p className="text-[12px] text-ink/45">
+                <p className="truncate text-sm font-medium text-white">{a.nombre}</p>
+                <p className="text-[12px] text-white/40">
                   {a.categoria} · {formatoTamano(a.tamano)} ·{" "}
                   {new Date(a.fecha).toLocaleDateString("es-MX")}
                 </p>
@@ -119,7 +119,7 @@ export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
           </li>
         ))}
         {archivos.length === 0 && (
-          <li className="text-sm text-ink/40">
+          <li className="text-sm text-white/35">
             Sin archivos subidos todavía.
           </li>
         )}

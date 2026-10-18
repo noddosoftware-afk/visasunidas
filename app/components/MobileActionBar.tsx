@@ -39,23 +39,23 @@ function IconPhoneCall() {
 export function MobileActionBar() {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 flex h-[68px] gap-[2px] bg-ink/10 p-[2px] shadow-[0_-10px_30px_-10px_rgba(10,14,42,0.4)] md:hidden"
-      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 2px)" }}
+      className="fixed inset-x-0 bottom-0 z-50 flex h-[64px] md:hidden"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <motion.a
         href="#contacto"
-        whileTap={{ scale: 0.95, y: 1 }}
+        whileTap={{ scale: 0.97 }}
         transition={{ duration: 0.12 }}
-        className="relative flex flex-1 items-center justify-center gap-2 overflow-hidden rounded-[10px] bg-gradient-to-b from-[#4049ff] to-brand text-[16px] font-bold uppercase tracking-wide text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-3px_6px_rgba(0,0,0,0.25),0_4px_10px_-2px_rgba(41,48,249,0.5)] active:shadow-[inset_0_2px_6px_rgba(0,0,0,0.35)]"
+        className="flex flex-1 items-center justify-center gap-2 bg-brand text-[17px] font-bold uppercase tracking-wide text-white"
       >
         <IconClipboard />
         Formulario
       </motion.a>
       <motion.a
         href="tel:+523123092619"
-        whileTap={{ scale: 0.95, y: 1 }}
+        whileTap={{ scale: 0.97 }}
         transition={{ duration: 0.12 }}
-        className="relative flex flex-1 items-center justify-center gap-2 overflow-hidden rounded-[10px] bg-gradient-to-b from-[#ddab5e] to-gold text-[16px] font-bold uppercase tracking-wide text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-3px_6px_rgba(0,0,0,0.2),0_4px_10px_-2px_rgba(201,151,63,0.5)] active:shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)]"
+        className="flex flex-1 items-center justify-center gap-2 bg-gold text-[17px] font-bold uppercase tracking-wide text-white"
       >
         <IconPhoneCall />
         Llamada

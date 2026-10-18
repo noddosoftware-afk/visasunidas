@@ -20,18 +20,18 @@ import { PanelButton } from "../components/PanelButton";
 import { ToggleSwitch } from "../components/ToggleSwitch";
 
 const AVATAR_TONES = [
-  "bg-brand/10 text-brand",
+  "bg-brand/15 text-[#9ba0ff]",
   "bg-gold/15 text-gold",
-  "bg-emerald-100 text-emerald-700",
-  "bg-rose/10 text-rose",
-  "bg-violet-100 text-violet-700",
-  "bg-sky-100 text-sky-700",
+  "bg-emerald-400/15 text-emerald-300",
+  "bg-rose/15 text-[#ff8079]",
+  "bg-violet-400/15 text-violet-300",
+  "bg-sky-400/15 text-sky-300",
 ];
 
 const ROL_STYLE: Record<Rol, string> = {
-  Administrador: "bg-brand/10 text-brand",
+  Administrador: "bg-brand/15 text-[#9ba0ff]",
   "Asesor legal": "bg-gold/15 text-gold",
-  Recepción: "bg-ink/8 text-ink/60",
+  Recepción: "bg-white/8 text-white/55",
 };
 
 function iniciales(nombre: string) {
@@ -66,14 +66,14 @@ export default function Equipo() {
   return (
     <div className="max-w-3xl">
       <div className="flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-[#9ba0ff]">
           <IconUsers />
         </span>
         <div>
-          <h1 className="font-serif-display text-2xl font-medium text-ink">
+          <h1 className="text-2xl font-semibold tracking-tight text-white">
             Equipo
           </h1>
-          <p className="text-sm text-ink/60">
+          <p className="text-sm text-white/55">
             {esAdmin
               ? "Da acceso al panel, cambia roles y activa o pausa cuentas."
               : "Da acceso al panel a alguien más con su propio correo y código."}
@@ -102,31 +102,31 @@ export default function Equipo() {
           setRol("Recepción");
           setError("");
         }}
-        className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-ink/8 bg-white p-5"
+        className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-5 backdrop-blur-sm"
       >
         <input
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           placeholder="Nombre"
-          className="min-w-[140px] flex-1 rounded-xl border border-ink/15 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
+          className="min-w-[140px] flex-1 rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
         />
         <input
           type="email"
           value={correo}
           onChange={(e) => setCorreo(e.target.value)}
           placeholder="Correo"
-          className="min-w-[180px] flex-1 rounded-xl border border-ink/15 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
+          className="min-w-[180px] flex-1 rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
         />
         <input
           value={codigoAcceso}
           onChange={(e) => setCodigoAcceso(e.target.value)}
           placeholder="Código de acceso"
-          className="min-w-[140px] flex-1 rounded-xl border border-ink/15 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
+          className="min-w-[140px] flex-1 rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
         />
         <select
           value={rol}
           onChange={(e) => setRol(e.target.value as Rol)}
-          className="rounded-xl border border-ink/15 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
+          className="rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
         >
           {ROLES.map((r) => (
             <option key={r} value={r}>
@@ -149,9 +149,9 @@ export default function Equipo() {
         </motion.p>
       )}
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-ink/8 bg-white">
+      <div className="mt-6 overflow-x-auto rounded-2xl border border-white/8 bg-white/[0.03]">
         <table className="w-full text-left text-sm">
-          <thead className="bg-ink/3 text-[12px] uppercase tracking-wide text-ink/50">
+          <thead className="bg-white/4 text-[12px] uppercase tracking-wide text-white/45">
             <tr>
               <th className="px-5 py-3">Nombre</th>
               <th className="px-5 py-3">Rol</th>
@@ -167,8 +167,8 @@ export default function Equipo() {
                 key={u.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className={`border-t border-ink/6 transition-colors hover:bg-paper-dim ${
-                  !u.activo || u.pausado ? "bg-ink/3" : ""
+                className={`border-t border-white/6 transition-colors hover:bg-white/5 ${
+                  !u.activo || u.pausado ? "bg-white/4" : ""
                 }`}
               >
                 <td className="px-5 py-3">
@@ -181,7 +181,7 @@ export default function Equipo() {
                       {iniciales(u.nombre) || "?"}
                     </span>
                     <span
-                      className={`font-medium ${!u.activo || u.pausado ? "text-ink/40" : "text-ink"}`}
+                      className={`font-medium ${!u.activo || u.pausado ? "text-white/35" : "text-white"}`}
                     >
                       {u.nombre}
                     </span>
@@ -226,9 +226,9 @@ export default function Equipo() {
                     </span>
                   )}
                 </td>
-                <td className="px-5 py-3 text-ink/70">
+                <td className="px-5 py-3 text-white/65">
                   <span className="flex items-center gap-1.5">
-                    <IconMail className="h-3.5 w-3.5 text-ink/35" />
+                    <IconMail className="h-3.5 w-3.5 text-white/30" />
                     {u.correo}
                   </span>
                 </td>
@@ -281,7 +281,7 @@ export default function Equipo() {
       </div>
 
       {!esAdmin && (
-        <p className="mt-4 text-[13px] text-ink/40">
+        <p className="mt-4 text-[13px] text-white/35">
           Solo un Administrador puede cambiar roles o activar/pausar cuentas.
         </p>
       )}
@@ -301,12 +301,12 @@ export default function Equipo() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 10 }}
               transition={{ duration: 0.2 }}
-              className="fixed left-1/2 top-1/2 z-[90] w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 shadow-2xl"
+              className="fixed left-1/2 top-1/2 z-[90] w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-white/10 bg-[#121218] p-6 shadow-2xl backdrop-blur-md"
             >
-              <p className="text-[17px] font-semibold text-ink">
+              <p className="text-[17px] font-semibold text-white">
                 ¿Apagar la cuenta de {confirmarApagar.nombre}?
               </p>
-              <p className="mt-2 text-[14px] leading-relaxed text-ink/60">
+              <p className="mt-2 text-[14px] leading-relaxed text-white/55">
                 No podrá iniciar sesión en el panel hasta que vuelvas a
                 encenderla. Se quedará apagada por tiempo indefinido.
               </p>

@@ -14,11 +14,17 @@
 
 @theme inline {
   --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
   --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
   --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
   --color-gold: var(--gold);
+  --color-rose: var(--rose);
+  --color-muted: var(--muted);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
+  --font-plex: var(--font-plex);
 }
 
 html {

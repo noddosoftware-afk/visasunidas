@@ -29,9 +29,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
 
   if (!userId) {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-ink px-6">
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-brand/25 blur-[120px]" />
-        <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-gold/15 blur-[120px]" />
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0a0f] px-6 [font-family:var(--font-plex)]">
         <motion.form
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -49,20 +47,20 @@ export function AuthGate({ children }: { children: ReactNode }) {
               setSession(user.id);
             }
           }}
-          className="relative w-full max-w-sm rounded-2xl border border-ink/5 bg-white p-8 shadow-2xl"
+          className="relative w-full max-w-sm rounded-2xl border border-white/8 bg-white/[0.04] p-8 backdrop-blur-md"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand/20 to-brand/5 text-brand ring-1 ring-inset ring-brand/20">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/20 text-[#9ba0ff] ring-1 ring-inset ring-brand/30">
             <IconShieldCheck className="h-6 w-6" />
           </div>
-          <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.28em] text-brand">
+          <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.28em] text-[#9ba0ff]">
             Panel administrativo
           </p>
-          <h1 className="font-serif-display mt-2 text-2xl font-medium text-ink">
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white">
             Visas Unidas
           </h1>
 
           <div className="relative mt-6">
-            <IconMail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" />
+            <IconMail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
             <input
               type="email"
               autoFocus
@@ -72,7 +70,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
                 setError("");
               }}
               placeholder="Correo"
-              className="w-full rounded-xl border border-ink/15 py-3 pl-11 pr-4 text-sm outline-none transition-colors focus:border-brand"
+              className="w-full rounded-xl border border-white/12 bg-white/5 py-3 pl-11 pr-4 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-brand"
             />
           </div>
           <input
@@ -83,13 +81,13 @@ export function AuthGate({ children }: { children: ReactNode }) {
               setError("");
             }}
             placeholder="Código de acceso"
-            className="mt-3 w-full rounded-xl border border-ink/15 px-4 py-3 text-sm outline-none transition-colors focus:border-brand"
+            className="mt-3 w-full rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-brand"
           />
           {error && (
             <motion.p
               initial={{ opacity: 0, x: -4 }}
               animate={{ opacity: 1, x: 0 }}
-              className="mt-2 text-[13px] text-rose"
+              className="mt-2 text-[13px] text-[#ff8079]"
             >
               {error}
             </motion.p>
@@ -97,7 +95,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
           <PanelButton type="submit" className="mt-4 w-full py-3 text-sm">
             Entrar
           </PanelButton>
-          <p className="mt-4 text-[12px] leading-relaxed text-ink/40">
+          <p className="mt-4 text-[12px] leading-relaxed text-white/35">
             Acceso de ejemplo: admin@visasunidas.com / visasunidas2026. Los
             datos ya viven en una base de datos real (Supabase), pero este
             login sigue siendo propio del panel, no Supabase Auth — para

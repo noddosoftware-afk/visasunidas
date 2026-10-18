@@ -9,23 +9,30 @@ export function Services() {
   const destacados = SERVICES.slice(0, 3);
 
   return (
-    <section id="servicios" className="bg-paper-dim py-28">
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal className="mx-auto max-w-xl text-center">
-          <p className="text-[16px] font-semibold uppercase tracking-[0.2em] text-brand">
-            Cómo podemos ayudarte
-          </p>
-          <h2 className="font-serif-display mt-4 text-[clamp(1.9rem,3.2vw,2.8rem)] font-medium">
-            Servicios
-          </h2>
-        </Reveal>
+    <section id="servicios" className="bg-paper-dim py-24 md:py-28">
+      <div className="mx-auto max-w-6xl px-6 md:px-10">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <Reveal>
+            <h2 className="font-serif-display max-w-md text-[clamp(1.9rem,3.6vw,3rem)] font-medium leading-[1.1] text-ink">
+              Cómo podemos ayudarte
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <Link
+              href="/servicios"
+              className="text-[17px] font-semibold text-brand underline-offset-4 hover:underline"
+            >
+              Ver los {SERVICES.length} servicios →
+            </Link>
+          </Reveal>
+        </div>
 
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07 } } }}
-          className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+          className="mt-12"
         >
           {destacados.map((s, i) => (
             <ServiceCard
@@ -37,15 +44,6 @@ export function Services() {
             />
           ))}
         </motion.div>
-
-        <Reveal className="mt-10 text-center">
-          <Link
-            href="/servicios"
-            className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-7 py-3.5 text-[16px] font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
-          >
-            Ver todos los servicios ({SERVICES.length}) →
-          </Link>
-        </Reveal>
       </div>
     </section>
   );

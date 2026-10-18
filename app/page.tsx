@@ -1,5 +1,6 @@
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
+import { ImageBand } from "./components/ImageBand";
 import { TrustStory } from "./components/TrustStory";
 import { Acrostic } from "./components/Acrostic";
 import { Services } from "./components/Services";
@@ -10,10 +11,11 @@ import { MobileActionBar } from "./components/MobileActionBar";
 
 export default function Home() {
   return (
-    <div className="pb-20 md:pb-0">
+    <div className="pb-16 md:pb-0">
       <Header />
       <main>
         <Hero />
+        <ImageBand />
         <TrustStory />
         <Acrostic />
         <Services />

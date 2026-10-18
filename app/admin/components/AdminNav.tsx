@@ -34,7 +34,7 @@ export function AdminNav() {
   return (
     <>
       {/* Escritorio: pills horizontales */}
-      <nav className="hidden items-center gap-1 text-[14px] font-medium text-ink/60 md:flex">
+      <nav className="hidden items-center gap-1 text-[14px] font-medium text-white/55 md:flex">
         {LINKS.map((l) => {
           const active = l.exact ? pathname === l.href : pathname.startsWith(l.href);
           const Icon = l.icon;
@@ -43,7 +43,7 @@ export function AdminNav() {
               key={l.href}
               href={l.href}
               className={`flex items-center gap-2 rounded-full px-4 py-2 transition-colors ${
-                active ? "bg-brand/10 text-brand" : "hover:bg-ink/5 hover:text-ink"
+                active ? "bg-brand/20 text-white" : "hover:bg-white/8 hover:text-white"
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -53,7 +53,7 @@ export function AdminNav() {
         })}
         <Link
           href="/"
-          className="ml-2 flex items-center gap-1.5 rounded-full px-4 py-2 text-ink/50 transition-colors hover:bg-ink/5 hover:text-ink"
+          className="ml-2 flex items-center gap-1.5 rounded-full px-4 py-2 text-white/40 transition-colors hover:bg-white/8 hover:text-white"
         >
           Ver sitio
           <IconExternalLink className="h-3.5 w-3.5" />
@@ -65,7 +65,7 @@ export function AdminNav() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Abrir menú"
-        className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-ink/5 md:hidden"
+        className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-colors hover:bg-white/8 md:hidden"
       >
         <IconMenu />
       </button>
@@ -80,7 +80,7 @@ export function AdminNav() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 z-[60] bg-ink/50 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm md:hidden"
             />
             <motion.aside
               key="drawer"
@@ -88,14 +88,14 @@ export function AdminNav() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-y-0 right-0 z-[70] flex h-full w-[82%] max-w-sm flex-col bg-white shadow-2xl md:hidden"
+              className="fixed inset-y-0 right-0 z-[70] flex h-full w-[82%] max-w-sm flex-col bg-[#101016] shadow-2xl md:hidden"
             >
-              <div className="flex items-center justify-between border-b border-ink/8 px-6 py-5">
+              <div className="flex items-center justify-between border-b border-white/8 px-6 py-5">
                 <div className="flex items-center gap-2.5">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ink text-[13px] font-semibold text-white">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-[13px] font-semibold text-white">
                     VU
                   </span>
-                  <span className="font-serif-display text-[17px] font-medium text-ink">
+                  <span className="text-[17px] font-semibold text-white">
                     Admin
                   </span>
                 </div>
@@ -103,7 +103,7 @@ export function AdminNav() {
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Cerrar menú"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-white/60 transition-colors hover:bg-white/8 hover:text-white"
                 >
                   <IconX />
                 </button>
@@ -122,8 +122,8 @@ export function AdminNav() {
                       onClick={() => setOpen(false)}
                       className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-[17px] font-medium transition-colors ${
                         active
-                          ? "bg-brand/10 text-brand"
-                          : "text-ink/80 hover:bg-paper-dim"
+                          ? "bg-brand/20 text-white"
+                          : "text-white/70 hover:bg-white/8"
                       }`}
                     >
                       <Icon className="h-5 w-5" />
@@ -133,11 +133,11 @@ export function AdminNav() {
                 })}
               </nav>
 
-              <div className="mt-auto border-t border-ink/8 p-4">
+              <div className="mt-auto border-t border-white/8 p-4">
                 <Link
                   href="/"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 rounded-xl px-4 py-3.5 text-[16px] font-medium text-ink/50 transition-colors hover:bg-paper-dim hover:text-ink"
+                  className="flex items-center gap-2 rounded-xl px-4 py-3.5 text-[16px] font-medium text-white/45 transition-colors hover:bg-white/8 hover:text-white"
                 >
                   <IconExternalLink className="h-4 w-4" />
                   Ver sitio

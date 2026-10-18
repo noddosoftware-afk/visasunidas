@@ -28,10 +28,10 @@ export default function NuevaSolicitud() {
   return (
     <div className="max-w-xl">
       <div className="flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-[#9ba0ff]">
           <IconFilePlus />
         </span>
-        <h1 className="font-serif-display text-2xl font-medium text-ink">
+        <h1 className="text-2xl font-semibold tracking-tight text-white">
           Nueva solicitud
         </h1>
       </div>
@@ -53,7 +53,7 @@ export default function NuevaSolicitud() {
           });
           router.push(`/admin/${s.id}`);
         }}
-        className="mt-6 space-y-7 rounded-2xl border border-ink/8 bg-white p-6"
+        className="mt-6 space-y-7 rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm"
       >
         <FormGroup icon={<IconUserPlus className="h-4 w-4" />} label="Datos del cliente">
           <Field label="Nombre del cliente">
@@ -156,15 +156,19 @@ export default function NuevaSolicitud() {
         .input {
           width: 100%;
           border-radius: 0.75rem;
-          border: 1px solid rgba(10, 14, 42, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           padding: 0.65rem 0.9rem;
           font-size: 0.875rem;
           outline: none;
-          background: white;
+          background: rgba(255, 255, 255, 0.05);
+          color: white;
           transition: border-color 0.15s ease;
         }
+        .input::placeholder {
+          color: rgba(255, 255, 255, 0.3);
+        }
         .input:hover {
-          border-color: rgba(10, 14, 42, 0.25);
+          border-color: rgba(255, 255, 255, 0.25);
         }
         .input:focus {
           border-color: var(--brand);
@@ -185,11 +189,11 @@ function FormGroup({
 }) {
   return (
     <div>
-      <div className="mb-3 flex items-center gap-2 border-b border-ink/6 pb-3">
-        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-ink/6 text-ink/50">
+      <div className="mb-3 flex items-center gap-2 border-b border-white/8 pb-3">
+        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-white/8 text-white/45">
           {icon}
         </span>
-        <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink/50">
+        <h2 className="text-[13px] font-semibold uppercase tracking-wide text-white/45">
           {label}
         </h2>
       </div>
@@ -207,7 +211,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[13px] font-medium text-ink/70">
+      <span className="mb-1.5 block text-[13px] font-medium text-white/65">
         {label}
       </span>
       {children}

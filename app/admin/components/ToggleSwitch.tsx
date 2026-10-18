@@ -20,7 +20,7 @@ export function ToggleSwitch({
       disabled={disabled}
       onClick={() => !disabled && onChange(!checked)}
       className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 ${
-        checked ? activeColor : "bg-ink/15"
+        checked ? activeColor : "bg-white/15"
       } ${disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
     >
       <motion.span

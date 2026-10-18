@@ -56,12 +56,12 @@ export default function SolicitudDetalle({
   }, [id]);
 
   if (solicitud === undefined) {
-    return <div className="text-ink/40">Cargando solicitud...</div>;
+    return <div className="text-white/35">Cargando solicitud...</div>;
   }
 
   if (solicitud === null) {
     return (
-      <div className="text-ink/60">
+      <div className="text-white/55">
         Solicitud no encontrada.{" "}
         <Link href="/admin" className="text-brand">
           Volver
@@ -85,35 +85,35 @@ export default function SolicitudDetalle({
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-ink/8 bg-white p-6"
+          className="rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm"
         >
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand/10 font-serif-display text-xl font-medium text-brand">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand/15 text-xl font-semibold text-[#9ba0ff]">
                 {iniciales || "?"}
               </span>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="font-serif-display text-2xl font-medium text-ink">
+                  <h1 className="text-2xl font-semibold tracking-tight text-white">
                     {solicitud.clienteNombre}
                   </h1>
-                  <span className="rounded-full bg-ink/6 px-2.5 py-0.5 font-mono text-[12px] text-ink/50">
+                  <span className="rounded-full bg-white/8 px-2.5 py-0.5 font-mono text-[12px] text-white/45">
                     {solicitud.folio}
                   </span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
                       solicitud.origen === "Sitio web"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-ink/6 text-ink/50"
+                        ? "bg-emerald-400/15 text-emerald-300"
+                        : "bg-white/8 text-white/45"
                     }`}
                   >
                     {solicitud.origen}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-ink/60">
+                <p className="mt-1 text-sm text-white/55">
                   {tramite?.title} — {solicitud.variante} · {solicitud.nacionalidad}
                 </p>
-                <div className="mt-2 flex flex-wrap items-center gap-4 text-[13px] text-ink/45">
+                <div className="mt-2 flex flex-wrap items-center gap-4 text-[13px] text-white/40">
                   <span className="flex items-center gap-1.5">
                     <IconPhone className="h-3.5 w-3.5" />
                     {solicitud.clienteTelefono || "—"}
@@ -124,7 +124,7 @@ export default function SolicitudDetalle({
                   </span>
                 </div>
                 {solicitud.esParaOtraPersona && (
-                  <div className="mt-3 rounded-xl border border-gold/25 bg-gold/10 px-3 py-2 text-[13px] text-ink/70">
+                  <div className="mt-3 rounded-xl border border-gold/25 bg-gold/10 px-3 py-2 text-[13px] text-white/65">
                     <span className="font-semibold text-gold">
                       Trámite gestionado por otra persona:
                     </span>{" "}
@@ -147,9 +147,9 @@ export default function SolicitudDetalle({
             </motion.div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-6 border-t border-ink/6 pt-5">
+          <div className="mt-5 flex flex-wrap items-center gap-6 border-t border-white/6 pt-5">
             <div className="flex items-center gap-3">
-              <label className="text-[13px] font-medium text-ink/60">
+              <label className="text-[13px] font-medium text-white/55">
                 Estado
               </label>
               <select
@@ -158,7 +158,7 @@ export default function SolicitudDetalle({
                   await updateEstado(id, e.target.value as Estado);
                   reload();
                 }}
-                className="rounded-xl border border-ink/15 px-3 py-2 text-sm transition-colors hover:border-ink/25"
+                className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
               >
                 {ESTADOS.map((e) => (
                   <option key={e} value={e}>
@@ -169,7 +169,7 @@ export default function SolicitudDetalle({
             </div>
 
             <div className="flex items-center gap-3">
-              <label className="text-[13px] font-medium text-ink/60">
+              <label className="text-[13px] font-medium text-white/55">
                 Prioridad
               </label>
               <select
@@ -178,7 +178,7 @@ export default function SolicitudDetalle({
                   await updatePrioridad(id, e.target.value as Prioridad);
                   reload();
                 }}
-                className="rounded-xl border border-ink/15 px-3 py-2 text-sm transition-colors hover:border-ink/25"
+                className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
               >
                 {PRIORIDADES.map((p) => (
                   <option key={p} value={p}>
@@ -208,7 +208,7 @@ export default function SolicitudDetalle({
               return (
                 <li
                   key={fase}
-                  className="flex items-center justify-between gap-4 border-b border-ink/6 pb-3 last:border-0 last:pb-0"
+                  className="flex items-center justify-between gap-4 border-b border-white/6 pb-3 last:border-0 last:pb-0"
                 >
                   <label className="flex items-center gap-3">
                     <input
@@ -223,15 +223,15 @@ export default function SolicitudDetalle({
                     <span
                       className={`text-sm transition-colors ${
                         progreso.completada
-                          ? "text-ink line-through"
-                          : "text-ink/80"
+                          ? "text-white/50 line-through"
+                          : "text-white/80"
                       }`}
                     >
                       {fase}
                     </span>
                   </label>
                   {progreso.completada && progreso.fecha && (
-                    <span className="text-[12px] text-ink/40">
+                    <span className="text-[12px] text-white/35">
                       {new Date(progreso.fecha).toLocaleDateString("es-MX")}
                     </span>
                   )}
@@ -258,7 +258,7 @@ export default function SolicitudDetalle({
             {solicitud.documentos.map((doc) => (
               <li
                 key={doc.id}
-                className="flex items-center justify-between gap-4 border-b border-ink/6 pb-3 last:border-0 last:pb-0"
+                className="flex items-center justify-between gap-4 border-b border-white/6 pb-3 last:border-0 last:pb-0"
               >
                 <label className="flex items-center gap-3">
                   <input
@@ -272,20 +272,20 @@ export default function SolicitudDetalle({
                   />
                   <span
                     className={`text-sm transition-colors ${
-                      doc.recibido ? "text-ink line-through" : "text-ink/80"
+                      doc.recibido ? "text-white/50 line-through" : "text-white/80"
                     }`}
                   >
                     {doc.nombre}
                   </span>
                   {doc.personalizado && (
-                    <span className="rounded-full bg-ink/6 px-2 py-0.5 text-[11px] text-ink/40">
+                    <span className="rounded-full bg-white/8 px-2 py-0.5 text-[11px] text-white/35">
                       Extra
                     </span>
                   )}
                 </label>
                 <div className="flex items-center gap-3">
                   {doc.recibido && doc.fecha && (
-                    <span className="text-[12px] text-ink/40">
+                    <span className="text-[12px] text-white/35">
                       {new Date(doc.fecha).toLocaleDateString("es-MX")}
                     </span>
                   )}
@@ -304,7 +304,7 @@ export default function SolicitudDetalle({
               </li>
             ))}
             {solicitud.documentos.length === 0 && (
-              <li className="text-sm text-ink/40">
+              <li className="text-sm text-white/35">
                 Este trámite no tiene documentos configurados.
               </li>
             )}
@@ -324,7 +324,7 @@ export default function SolicitudDetalle({
               value={nuevoDocumento}
               onChange={(e) => setNuevoDocumento(e.target.value)}
               placeholder="Añadir documento adicional..."
-              className="flex-1 rounded-xl border border-ink/15 px-3 py-2 text-sm outline-none transition-colors focus:border-gold"
+              className="flex-1 rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-gold"
             />
             <PanelButton type="submit" variant="gold">
               Añadir
@@ -342,7 +342,7 @@ export default function SolicitudDetalle({
         >
           <div className="space-y-4">
             {preguntas.length === 0 && (
-              <p className="text-sm text-ink/40">
+              <p className="text-sm text-white/35">
                 Este trámite no tiene preguntas de evaluación configuradas.
               </p>
             )}
@@ -351,9 +351,9 @@ export default function SolicitudDetalle({
               return (
                 <div
                   key={p.id}
-                  className="flex items-center justify-between gap-4 border-b border-ink/6 pb-3 last:border-0 last:pb-0"
+                  className="flex items-center justify-between gap-4 border-b border-white/6 pb-3 last:border-0 last:pb-0"
                 >
-                  <p className="text-sm text-ink/80">{p.texto}</p>
+                  <p className="text-sm text-white/80">{p.texto}</p>
                   <div className="flex gap-2">
                     {[
                       { label: "Sí", val: true },
@@ -371,7 +371,7 @@ export default function SolicitudDetalle({
                             ? opt.val === p.redFlag
                               ? "bg-rose text-white"
                               : "bg-brand text-white"
-                            : "bg-ink/6 text-ink/50 hover:bg-ink/10"
+                            : "bg-white/8 text-white/45 hover:bg-white/15"
                         }`}
                       >
                         {opt.label}
@@ -390,7 +390,7 @@ export default function SolicitudDetalle({
           tone="ink"
           collapsible={false}
         >
-          <p className="whitespace-pre-wrap text-sm text-ink/70">
+          <p className="whitespace-pre-wrap text-sm text-white/65">
             {solicitud.notas || "—"}
           </p>
         </Section>
@@ -401,7 +401,7 @@ export default function SolicitudDetalle({
           subtitle="Añade notas sin perder el historial anterior."
           tone="sky"
           right={
-            <span className="rounded-full bg-ink/6 px-2.5 py-1 text-[12px] text-ink/50">
+            <span className="rounded-full bg-white/8 px-2.5 py-1 text-[12px] text-white/45">
               {solicitud.bitacora.length}
             </span>
           }
@@ -420,7 +420,7 @@ export default function SolicitudDetalle({
               value={nuevaNota}
               onChange={(e) => setNuevaNota(e.target.value)}
               placeholder="Añadir nota de seguimiento..."
-              className="flex-1 rounded-xl border border-ink/15 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
+              className="flex-1 rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white outline-none transition-colors placeholder:text-white/30 focus:border-brand"
             />
             <PanelButton type="submit">Añadir</PanelButton>
           </form>
@@ -433,14 +433,14 @@ export default function SolicitudDetalle({
                 animate={{ opacity: 1, x: 0 }}
                 className="border-l-2 border-brand/30 pl-3"
               >
-                <p className="text-[12px] text-ink/40">
+                <p className="text-[12px] text-white/35">
                   {new Date(n.fecha).toLocaleString("es-MX")}
                 </p>
-                <p className="text-sm text-ink/80">{n.texto}</p>
+                <p className="text-sm text-white/80">{n.texto}</p>
               </motion.li>
             ))}
             {solicitud.bitacora.length === 0 && (
-              <li className="text-sm text-ink/40">Sin notas todavía.</li>
+              <li className="text-sm text-white/35">Sin notas todavía.</li>
             )}
           </ul>
         </Section>
@@ -455,8 +455,8 @@ export default function SolicitudDetalle({
               <li key={i} className="flex items-start gap-3">
                 <div className="mt-1.5 h-2 w-2 rounded-full bg-brand" />
                 <div>
-                  <p className="text-sm font-medium text-ink">{h.estado}</p>
-                  <p className="text-[12px] text-ink/40">
+                  <p className="text-sm font-medium text-white">{h.estado}</p>
+                  <p className="text-[12px] text-white/35">
                     {new Date(h.fecha).toLocaleString("es-MX")}
                   </p>
                 </div>

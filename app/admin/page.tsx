@@ -25,7 +25,7 @@ const PAGE_SIZE = 8;
 const PRIORIDAD_ACCENT: Record<Prioridad, string> = {
   Alta: "border-l-4 border-l-rose",
   Media: "border-l-4 border-l-gold",
-  Baja: "border-l-4 border-l-ink/15",
+  Baja: "border-l-4 border-l-white/15",
 };
 
 export default function AdminDashboard() {
@@ -112,10 +112,10 @@ export default function AdminDashboard() {
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-[#9ba0ff]">
             <IconLayoutDashboard />
           </span>
-          <h1 className="font-serif-display text-2xl font-medium text-ink">
+          <h1 className="text-2xl font-semibold tracking-tight text-white">
             Solicitudes
           </h1>
         </div>
@@ -134,7 +134,7 @@ export default function AdminDashboard() {
                 setCargando(false);
               }
             }}
-            className="text-[13px] font-medium text-ink/40 underline-offset-2 hover:text-rose hover:underline"
+            className="text-[13px] font-medium text-white/35 underline-offset-2 hover:text-[#ff8079] hover:underline"
           >
             Restablecer datos de ejemplo
           </button>
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
             <motion.span
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-b from-[#4049ff] to-brand px-5 py-2.5 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_20px_-10px_rgba(41,48,249,0.6)]"
+              className="flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep"
             >
               <IconFilePlus className="h-4 w-4" />
               Nueva solicitud
@@ -163,7 +163,7 @@ export default function AdminDashboard() {
         <select
           value={tramiteFiltro}
           onChange={(e) => actualizarFiltro(setTramiteFiltro)(e.target.value)}
-          className="rounded-xl border border-ink/15 bg-white px-3 py-2 text-sm transition-colors hover:border-ink/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
         >
           <option value="todos">Todos los trámites</option>
           {SERVICES.map((s) => (
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
           onChange={(e) =>
             actualizarFiltro(setEstadoFiltro)(e.target.value as Estado | "todos")
           }
-          className="rounded-xl border border-ink/15 bg-white px-3 py-2 text-sm transition-colors hover:border-ink/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
         >
           <option value="todos">Todos los estados</option>
           {ESTADOS.map((e) => (
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
               e.target.value as Prioridad | "todos"
             )
           }
-          className="rounded-xl border border-ink/15 bg-white px-3 py-2 text-sm transition-colors hover:border-ink/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
         >
           <option value="todos">Prioridad (todas)</option>
           {PRIORIDADES.map((p) => (
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
               e.target.value as Viabilidad | "todos"
             )
           }
-          className="rounded-xl border border-ink/15 bg-white px-3 py-2 text-sm transition-colors hover:border-ink/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
         >
           <option value="todos">Viabilidad (todas)</option>
           {VIABILIDADES.map((v) => (
@@ -223,19 +223,19 @@ export default function AdminDashboard() {
         </select>
 
         <div className="relative">
-          <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" />
+          <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
           <input
             value={busqueda}
             onChange={(e) => actualizarFiltro(setBusqueda)(e.target.value)}
             placeholder="Buscar por nombre o folio..."
-            className="w-56 rounded-xl border border-ink/15 bg-white py-2 pl-9 pr-3 text-sm transition-colors hover:border-ink/25 focus:border-brand"
+            className="w-56 rounded-xl border border-white/12 bg-white/5 py-2 pl-9 pr-3 text-sm text-white/80 transition-colors hover:border-white/25 focus:border-brand"
           />
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-ink/8 bg-white">
+      <div className="mt-6 overflow-x-auto rounded-2xl border border-white/8 bg-white/[0.03]">
         <table className="w-full text-left text-sm">
-          <thead className="bg-ink/3 text-[12px] uppercase tracking-wide text-ink/50">
+          <thead className="bg-white/5 text-[12px] uppercase tracking-wide text-white/45">
             <tr>
               <th className="px-5 py-3">Folio</th>
               <th className="px-5 py-3">Cliente</th>
@@ -252,7 +252,7 @@ export default function AdminDashboard() {
           <tbody>
             {cargando && (
               <tr>
-                <td colSpan={10} className="px-5 py-14 text-center text-ink/40">
+                <td colSpan={10} className="px-5 py-14 text-center text-white/35">
                   Cargando solicitudes...
                 </td>
               </tr>
@@ -263,19 +263,19 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: Math.min(i, 8) * 0.03 }}
-                className={`cursor-pointer border-t border-ink/6 transition-colors hover:bg-paper-dim ${PRIORIDAD_ACCENT[s.prioridad]}`}
+                className={`cursor-pointer border-t border-white/6 transition-colors hover:bg-white/5 ${PRIORIDAD_ACCENT[s.prioridad]}`}
                 onClick={() => router.push(`/admin/${s.id}`)}
               >
-                <td className="px-5 py-3 font-mono text-[12px] text-ink/50">
+                <td className="px-5 py-3 font-mono text-[12px] text-white/45">
                   {s.folio}
                 </td>
-                <td className="px-5 py-3 font-medium text-ink">
+                <td className="px-5 py-3 font-medium text-white">
                   {s.clienteNombre}
                 </td>
-                <td className="px-5 py-3 text-ink/70">
+                <td className="px-5 py-3 text-white/65">
                   {tramiteLabel(s.tramiteSlug)}
                 </td>
-                <td className="px-5 py-3 text-ink/70">{s.variante}</td>
+                <td className="px-5 py-3 text-white/65">{s.variante}</td>
                 <td className="px-5 py-3">
                   <PrioridadBadge prioridad={s.prioridad} />
                 </td>
@@ -297,16 +297,16 @@ export default function AdminDashboard() {
                     tone="gold"
                   />
                 </td>
-                <td className="px-5 py-3 text-ink/50">
+                <td className="px-5 py-3 text-white/40">
                   {new Date(s.actualizadoEn).toLocaleDateString("es-MX")}
                 </td>
               </motion.tr>
             ))}
             {!cargando && visibles.length === 0 && (
               <tr>
-                <td colSpan={10} className="px-5 py-14 text-center text-ink/40">
+                <td colSpan={10} className="px-5 py-14 text-center text-white/35">
                   <div className="flex flex-col items-center gap-2">
-                    <IconSearch className="h-6 w-6 text-ink/25" />
+                    <IconSearch className="h-6 w-6 text-white/20" />
                     No hay solicitudes con esos filtros.
                   </div>
                 </td>
@@ -317,7 +317,7 @@ export default function AdminDashboard() {
       </div>
 
       {totalPaginas > 1 && (
-        <div className="mt-4 flex items-center justify-between text-sm text-ink/60">
+        <div className="mt-4 flex items-center justify-between text-sm text-white/55">
           <span>
             Página {paginaActual} de {totalPaginas} · {filtradas.length}{" "}
             solicitudes
@@ -326,14 +326,14 @@ export default function AdminDashboard() {
             <button
               disabled={paginaActual === 1}
               onClick={() => setPagina((p) => Math.max(1, p - 1))}
-              className="rounded-lg border border-ink/15 px-3 py-1.5 transition-colors hover:border-ink/25 disabled:opacity-40"
+              className="rounded-lg border border-white/12 px-3 py-1.5 transition-colors hover:border-white/25 disabled:opacity-40"
             >
               ← Anterior
             </button>
             <button
               disabled={paginaActual === totalPaginas}
               onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
-              className="rounded-lg border border-ink/15 px-3 py-1.5 transition-colors hover:border-ink/25 disabled:opacity-40"
+              className="rounded-lg border border-white/12 px-3 py-1.5 transition-colors hover:border-white/25 disabled:opacity-40"
             >
               Siguiente →
             </button>
@@ -345,10 +345,10 @@ export default function AdminDashboard() {
 }
 
 const STAT_TONE: Record<string, { bg: string; text: string; bar: string; border: string }> = {
-  brand: { bg: "bg-brand/10", text: "text-brand", bar: "bg-brand", border: "hover:border-brand/30" },
-  emerald: { bg: "bg-emerald-100", text: "text-emerald-700", bar: "bg-emerald-500", border: "hover:border-emerald-300/60" },
-  rose: { bg: "bg-rose/10", text: "text-rose", bar: "bg-rose", border: "hover:border-rose/30" },
-  ink: { bg: "bg-ink/8", text: "text-ink/70", bar: "bg-ink/40", border: "hover:border-ink/20" },
+  brand: { bg: "bg-brand/15", text: "text-[#9ba0ff]", bar: "bg-brand", border: "hover:border-brand/40" },
+  emerald: { bg: "bg-emerald-400/15", text: "text-emerald-300", bar: "bg-emerald-400", border: "hover:border-emerald-400/40" },
+  rose: { bg: "bg-rose/15", text: "text-[#ff8079]", bar: "bg-rose", border: "hover:border-rose/40" },
+  ink: { bg: "bg-white/8", text: "text-white/70", bar: "bg-white/30", border: "hover:border-white/25" },
 };
 
 function StatCard({
@@ -368,14 +368,14 @@ function StatCard({
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      className={`relative overflow-hidden rounded-2xl border border-ink/8 bg-white p-5 shadow-[0_2px_10px_-6px_rgba(10,14,42,0.06)] transition-all ${border}`}
+      className={`relative overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-5 backdrop-blur-sm transition-colors ${border}`}
     >
       <span className={`absolute inset-x-0 top-0 h-1 ${bar}`} />
       <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${bg} ${text}`}>
         {icon}
       </div>
-      <p className="mt-3 text-[12px] uppercase tracking-wide text-ink/50">{label}</p>
-      <p className={`mt-1 font-serif-display text-3xl font-medium ${text}`}>
+      <p className="mt-3 text-[12px] uppercase tracking-wide text-white/45">{label}</p>
+      <p className={`mt-1 text-3xl font-semibold tracking-tight ${text}`}>
         {value}
       </p>
     </motion.div>

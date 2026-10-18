@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# design review tooling output
+.taste-skill/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

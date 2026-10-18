@@ -2,12 +2,12 @@ import type { Estado, Prioridad } from "../lib/types";
 import type { Viabilidad } from "../lib/questions";
 
 const ESTADO_STYLE: Record<Estado, string> = {
-  Recibido: "bg-ink/6 text-ink/70 ring-1 ring-inset ring-ink/15",
-  "Documentos pendientes": "bg-gold/10 text-gold ring-1 ring-inset ring-gold/30",
-  "En proceso": "bg-brand/10 text-brand ring-1 ring-inset ring-brand/30",
-  "Cita programada": "bg-violet-50 text-violet-700 ring-1 ring-inset ring-violet-300/60",
-  Resuelto: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-300/60",
-  Cancelado: "bg-rose/10 text-rose ring-1 ring-inset ring-rose/30",
+  Recibido: "bg-white/8 text-white/70 ring-1 ring-inset ring-white/15",
+  "Documentos pendientes": "bg-gold/15 text-gold ring-1 ring-inset ring-gold/35",
+  "En proceso": "bg-brand/20 text-[#9ba0ff] ring-1 ring-inset ring-brand/40",
+  "Cita programada": "bg-violet-400/15 text-violet-300 ring-1 ring-inset ring-violet-400/35",
+  Resuelto: "bg-emerald-400/15 text-emerald-300 ring-1 ring-inset ring-emerald-400/35",
+  Cancelado: "bg-rose/15 text-[#ff8079] ring-1 ring-inset ring-rose/35",
 };
 
 export function EstadoBadge({ estado }: { estado: Estado }) {
@@ -21,9 +21,9 @@ export function EstadoBadge({ estado }: { estado: Estado }) {
 }
 
 const VIABILIDAD_STYLE: Record<Viabilidad, string> = {
-  Viable: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-300/60",
-  "No viable": "bg-rose/10 text-rose ring-1 ring-inset ring-rose/30",
-  Pendiente: "bg-ink/6 text-ink/50 ring-1 ring-inset ring-ink/15",
+  Viable: "bg-emerald-400/15 text-emerald-300 ring-1 ring-inset ring-emerald-400/35",
+  "No viable": "bg-rose/15 text-[#ff8079] ring-1 ring-inset ring-rose/35",
+  Pendiente: "bg-white/8 text-white/50 ring-1 ring-inset ring-white/15",
 };
 
 export function ViabilidadBadge({ viabilidad }: { viabilidad: Viabilidad }) {
@@ -37,9 +37,9 @@ export function ViabilidadBadge({ viabilidad }: { viabilidad: Viabilidad }) {
 }
 
 const PRIORIDAD_STYLE: Record<Prioridad, string> = {
-  Alta: "bg-rose/10 text-rose ring-1 ring-inset ring-rose/30",
-  Media: "bg-gold/10 text-gold ring-1 ring-inset ring-gold/30",
-  Baja: "bg-sky-50 text-sky-700 ring-1 ring-inset ring-sky-300/60",
+  Alta: "bg-rose/15 text-[#ff8079] ring-1 ring-inset ring-rose/35",
+  Media: "bg-gold/15 text-gold ring-1 ring-inset ring-gold/35",
+  Baja: "bg-sky-400/15 text-sky-300 ring-1 ring-inset ring-sky-400/35",
 };
 
 export function PrioridadBadge({ prioridad }: { prioridad: Prioridad }) {

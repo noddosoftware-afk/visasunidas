@@ -4,23 +4,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IconChevronDown } from "./Icons";
 
 const TONE_STYLE: Record<string, string> = {
-  brand: "bg-gradient-to-br from-brand/15 to-brand/5 text-brand ring-1 ring-inset ring-brand/20",
-  gold: "bg-gradient-to-br from-gold/20 to-gold/5 text-gold ring-1 ring-inset ring-gold/25",
-  rose: "bg-gradient-to-br from-rose/15 to-rose/5 text-rose ring-1 ring-inset ring-rose/20",
-  emerald: "bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-300/50",
-  violet: "bg-gradient-to-br from-violet-100 to-violet-50 text-violet-700 ring-1 ring-inset ring-violet-300/50",
-  sky: "bg-gradient-to-br from-sky-100 to-sky-50 text-sky-700 ring-1 ring-inset ring-sky-300/50",
-  ink: "bg-ink/8 text-ink/70 ring-1 ring-inset ring-ink/10",
+  brand: "bg-brand/15 text-[#8c91ff] ring-1 ring-inset ring-brand/30",
+  gold: "bg-gold/15 text-gold ring-1 ring-inset ring-gold/30",
+  rose: "bg-rose/15 text-[#ff8079] ring-1 ring-inset ring-rose/30",
+  emerald: "bg-emerald-400/15 text-emerald-300 ring-1 ring-inset ring-emerald-400/30",
+  violet: "bg-violet-400/15 text-violet-300 ring-1 ring-inset ring-violet-400/30",
+  sky: "bg-sky-400/15 text-sky-300 ring-1 ring-inset ring-sky-400/30",
+  ink: "bg-white/8 text-white/70 ring-1 ring-inset ring-white/10",
 };
 
 const BORDER_STYLE: Record<string, string> = {
-  brand: "hover:border-brand/25",
-  gold: "hover:border-gold/30",
-  rose: "hover:border-rose/25",
-  emerald: "hover:border-emerald-300/60",
-  violet: "hover:border-violet-300/60",
-  sky: "hover:border-sky-300/60",
-  ink: "hover:border-ink/20",
+  brand: "hover:border-brand/40",
+  gold: "hover:border-gold/40",
+  rose: "hover:border-rose/40",
+  emerald: "hover:border-emerald-400/40",
+  violet: "hover:border-violet-400/40",
+  sky: "hover:border-sky-400/40",
+  ink: "hover:border-white/20",
 };
 
 export function Section({
@@ -49,7 +49,7 @@ export function Section({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`overflow-hidden rounded-2xl border border-ink/8 bg-white shadow-[0_2px_10px_-6px_rgba(10,14,42,0.08)] transition-all hover:shadow-[0_8px_22px_-10px_rgba(10,14,42,0.14)] ${BORDER_STYLE[tone]}`}
+      className={`overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] backdrop-blur-sm transition-colors ${BORDER_STYLE[tone]}`}
     >
       <button
         type="button"
@@ -65,9 +65,9 @@ export function Section({
             {icon}
           </span>
           <div>
-            <h2 className="text-[16px] font-semibold text-ink">{title}</h2>
+            <h2 className="text-[16px] font-semibold text-white">{title}</h2>
             {subtitle && (
-              <p className="mt-0.5 text-[13px] text-ink/50">{subtitle}</p>
+              <p className="mt-0.5 text-[13px] text-white/45">{subtitle}</p>
             )}
           </div>
         </div>
@@ -77,7 +77,7 @@ export function Section({
             <motion.span
               animate={{ rotate: open ? 180 : 0 }}
               transition={{ duration: 0.2 }}
-              className="text-ink/35"
+              className="text-white/30"
             >
               <IconChevronDown />
             </motion.span>

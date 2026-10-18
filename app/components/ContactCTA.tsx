@@ -37,55 +37,49 @@ export function ContactCTA() {
   }
 
   return (
-    <section id="contacto" className="relative overflow-hidden bg-ink py-28">
-      <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-brand/25 blur-[120px]" />
-      <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-gold/15 blur-[120px]" />
-
-      <div className="relative mx-auto max-w-3xl px-6 text-center text-white">
+    <section id="contacto" className="bg-ink py-24 md:py-32">
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-[1fr_1.1fr] md:items-start md:gap-20 md:px-10">
         <Reveal>
-          <p className="text-[16px] font-semibold uppercase tracking-[0.2em] text-gold">
-            Agenda tu consulta en línea
-          </p>
-          <h2 className="font-serif-display mt-4 text-[clamp(2rem,4vw,3rem)] font-medium leading-tight">
+          <h2 className="font-serif-display max-w-md text-[clamp(2rem,4.4vw,3.4rem)] font-medium leading-[1.1] text-white">
             ¿Cómo podemos ayudarte?
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-[18px] leading-relaxed text-white/85">
+          <p className="mt-6 max-w-sm text-[21px] leading-relaxed text-white/75">
             Cuéntanos tu caso y un asesor te contactará para resolverlo de
             corazón, sin compromiso.
           </p>
         </Reveal>
 
-        <Reveal delay={0.15} className="mt-12">
+        <Reveal delay={0.15}>
           {sent ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mx-auto max-w-md rounded-3xl border border-white/15 bg-white/5 p-10"
+              className="bg-white/[0.06] p-10"
             >
-              <p className="text-xl font-medium">
+              <p className="text-xl font-medium text-white">
                 Gracias — recibimos tu solicitud.
               </p>
-              <p className="mt-2 text-[17px] text-white/75">
+              <p className="mt-2 text-[17px] text-white/70">
                 Un asesor de Visas Unidas te contactará muy pronto.
               </p>
             </motion.div>
           ) : noElegible ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mx-auto max-w-md rounded-3xl border border-white/15 bg-white/5 p-10"
+              className="bg-white/[0.06] p-10"
             >
-              <p className="text-xl font-medium">
+              <p className="text-xl font-medium text-white">
                 Por ahora no podemos ayudar con este trámite.
               </p>
-              <p className="mt-2 text-[17px] text-white/75">
+              <p className="mt-2 text-[17px] text-white/70">
                 Nuestros servicios están enfocados en personas de nacionalidad
                 mexicana o estadounidense. Te recomendamos buscar asesoría
                 específica para este caso.
               </p>
               <button
                 onClick={resetElegibilidad}
-                className="mt-5 text-[15px] font-medium text-gold hover:underline"
+                className="mt-5 text-[14px] font-medium text-gold hover:underline"
               >
                 ← Volver al formulario
               </button>
@@ -113,20 +107,20 @@ export function ContactCTA() {
                 });
                 setSent(true);
               }}
-              className="mx-auto grid max-w-md gap-5 rounded-3xl border border-white/15 bg-white/5 p-8 text-left backdrop-blur-sm"
+              className="grid gap-4 bg-white/[0.06] p-7 text-left md:p-9"
             >
-              <label className="text-[15px] font-medium uppercase tracking-wide text-white/70">
+              <label className="text-[14px] font-medium text-white/60">
                 Nombre completo (quien llena este formulario)
                 <input
                   required
                   value={contactoNombre}
                   onChange={(e) => setContactoNombre(e.target.value)}
                   placeholder="Tu nombre"
-                  className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-[17px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-brand"
+                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white placeholder:text-white/40 outline-none transition-colors focus:bg-white/[0.16]"
                 />
               </label>
 
-              <label className="text-[15px] font-medium uppercase tracking-wide text-white/70">
+              <label className="text-[14px] font-medium text-white/60">
                 Teléfono
                 <input
                   required
@@ -134,11 +128,11 @@ export function ContactCTA() {
                   value={contactoTelefono}
                   onChange={(e) => setContactoTelefono(e.target.value)}
                   placeholder="(55) 0000 0000"
-                  className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-[17px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-brand"
+                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white placeholder:text-white/40 outline-none transition-colors focus:bg-white/[0.16]"
                 />
               </label>
 
-              <label className="text-[15px] font-medium uppercase tracking-wide text-white/70">
+              <label className="text-[14px] font-medium text-white/60">
                 ¿Este trámite es para ti o para otra persona?
                 <select
                   value={paraQuien}
@@ -146,7 +140,7 @@ export function ContactCTA() {
                     setParaQuien(e.target.value as ParaQuien);
                     resetElegibilidad();
                   }}
-                  className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:border-brand [&>option]:text-ink"
+                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
                 >
                   <option value="yo">Es para mí</option>
                   <option value="otra">Es para otra persona</option>
@@ -154,13 +148,13 @@ export function ContactCTA() {
               </label>
 
               {paraQuien === "yo" ? (
-                <label className="text-[15px] font-medium uppercase tracking-wide text-white/70">
+                <label className="text-[14px] font-medium text-white/60">
                   Tu nacionalidad
                   <select
                     required
                     value={nacionalidadPropia}
                     onChange={(e) => evaluarNacionalidad(e.target.value, false)}
-                    className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:border-brand [&>option]:text-ink"
+                    className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
                   >
                     <option value="" disabled>
                       Selecciona una opción
@@ -177,39 +171,39 @@ export function ContactCTA() {
                   <motion.div
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="rounded-2xl border border-gold/25 bg-gold/10 p-4"
+                    className="bg-gold/10 p-4"
                   >
-                    <p className="text-[13px] font-semibold uppercase tracking-wide text-gold">
+                    <p className="text-[14px] font-semibold text-gold">
                       Información de la persona
                     </p>
                     <div className="mt-3 grid gap-4">
-                      <label className="text-[13px] font-medium uppercase tracking-wide text-white/60">
+                      <label className="text-[14px] font-medium text-white/55">
                         Nombre completo de la persona
                         <input
                           required
                           value={personaNombre}
                           onChange={(e) => setPersonaNombre(e.target.value)}
                           placeholder="Nombre de la persona"
-                          className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-[16px] text-white placeholder:text-white/40 outline-none transition-colors focus:border-brand"
+                          className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white placeholder:text-white/35 outline-none transition-colors focus:bg-white/[0.16]"
                         />
                       </label>
-                      <label className="text-[13px] font-medium uppercase tracking-wide text-white/60">
+                      <label className="text-[14px] font-medium text-white/55">
                         Teléfono de la persona (opcional)
                         <input
                           type="tel"
                           value={personaTelefono}
                           onChange={(e) => setPersonaTelefono(e.target.value)}
                           placeholder="(55) 0000 0000"
-                          className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-[16px] text-white placeholder:text-white/40 outline-none transition-colors focus:border-brand"
+                          className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white placeholder:text-white/35 outline-none transition-colors focus:bg-white/[0.16]"
                         />
                       </label>
-                      <label className="text-[13px] font-medium uppercase tracking-wide text-white/60">
+                      <label className="text-[14px] font-medium text-white/55">
                         Nacionalidad de la persona
                         <select
                           required
                           value={nacionalidadPersona}
                           onChange={(e) => evaluarNacionalidad(e.target.value, true)}
-                          className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-[16px] text-white outline-none transition-colors focus:border-brand [&>option]:text-ink"
+                          className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
                         >
                           <option value="" disabled>
                             Selecciona una opción
@@ -226,13 +220,13 @@ export function ContactCTA() {
                 </AnimatePresence>
               )}
 
-              <label className="text-[15px] font-medium uppercase tracking-wide text-white/70">
+              <label className="text-[14px] font-medium text-white/60">
                 Tipo de trámite
                 <select
                   required
                   value={tramiteSlug}
                   onChange={(e) => setTramiteSlug(e.target.value)}
-                  className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:border-brand [&>option]:text-ink"
+                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
                 >
                   <option value="" disabled>
                     Selecciona una opción
@@ -247,9 +241,9 @@ export function ContactCTA() {
               </label>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.015 }}
                 whileTap={{ scale: 0.98 }}
-                className="mt-2 rounded-full bg-brand px-6 py-4 text-[17px] font-semibold text-white shadow-[0_10px_26px_-8px_rgba(41,48,249,0.7)]"
+                className="mt-2 bg-brand px-6 py-4 text-[17px] font-semibold text-white"
               >
                 Enviar solicitud →
               </motion.button>

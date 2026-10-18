@@ -43,7 +43,7 @@ export function CalendarMonth({
 
   return (
     <div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[12px] font-semibold uppercase text-ink/40">
+      <div className="grid grid-cols-7 gap-1 text-center text-[12px] font-semibold uppercase text-white/35">
         {DIAS.map((d, i) => (
           <div key={i} className="py-1.5">
             {d}
@@ -66,8 +66,8 @@ export function CalendarMonth({
                 isSelected
                   ? "bg-brand text-white"
                   : isToday
-                    ? "bg-brand/10 text-brand"
-                    : "text-ink/70 hover:bg-paper-dim"
+                    ? "bg-brand/20 text-[#9ba0ff]"
+                    : "text-white/65 hover:bg-white/8"
               }`}
             >
               {dia}
@@ -76,7 +76,7 @@ export function CalendarMonth({
                   <span
                     key={idx}
                     className={`h-1.5 w-1.5 rounded-full ${
-                      isSelected ? "bg-white" : TIPO_DOT[e.tipo] ?? "bg-ink/30"
+                      isSelected ? "bg-white" : TIPO_DOT[e.tipo] ?? "bg-white/30"
                     }`}
                   />
                 ))}
