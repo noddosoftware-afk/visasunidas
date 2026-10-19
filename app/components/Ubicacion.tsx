@@ -21,7 +21,7 @@ export function Ubicacion() {
               rel="noopener noreferrer"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-[17px] font-semibold text-white"
             >
-              Cómo llegar ↗
+              Cómo llegar
             </a>
           </Reveal>
 

@@ -3,6 +3,57 @@ import { motion } from "framer-motion";
 import { ACROSTIC } from "../content";
 import { Reveal } from "./Reveal";
 
+type AcrosticItem = (typeof ACROSTIC)[number];
+
+const VISAS = ACROSTIC.slice(0, 5);
+const UNIDAS = ACROSTIC.slice(5);
+
+function Fila({
+  items,
+  cols,
+  delay,
+}: {
+  items: readonly AcrosticItem[];
+  cols: string;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-60px" }}
+      variants={{
+        hidden: {},
+        show: { transition: { staggerChildren: 0.06, delayChildren: delay } },
+      }}
+      className={`grid gap-x-3 gap-y-10 ${cols}`}
+    >
+      {items.map((item, i) => (
+        <motion.div
+          key={i}
+          variants={{
+            hidden: { opacity: 0, y: 16 },
+            show: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+            },
+          }}
+          whileHover={{ y: -4 }}
+          className="group flex flex-col items-center text-center"
+        >
+          <span className="font-serif-display text-[clamp(2.1rem,6vw,4rem)] font-medium leading-none text-brand transition-colors group-hover:text-gold">
+            {item.letter}
+          </span>
+          <span className="mt-3 text-[13px] font-medium leading-snug text-ink/65 sm:text-[14px]">
+            {item.word}
+          </span>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+
 export function Acrostic() {
   return (
     <section id="historia" className="bg-paper py-24 md:py-28">
@@ -13,38 +64,10 @@ export function Acrostic() {
           </h2>
         </Reveal>
 
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.045 } } }}
-          className="mt-12"
-        >
-          {ACROSTIC.map((item, i) => (
-            <motion.div
-              key={i}
-              variants={{
-                hidden: { opacity: 0, x: -24 },
-                show: {
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-                },
-              }}
-              whileHover={{ x: 8 }}
-              className="group flex items-baseline justify-between gap-6 py-12 first:pt-0 odd:bg-paper-dim md:py-6 md:px-6"
-            >
-              <span className="font-serif-display text-[clamp(2.2rem,6vw,4.2rem)] font-medium leading-none text-ink transition-colors group-hover:text-brand">
-                <span className="text-brand transition-colors group-hover:text-gold">
-                  {item.letter}
-                </span>
-                <span className="ml-3 text-[0.42em] font-sans font-medium tracking-tight text-ink/70">
-                  {item.word}
-                </span>
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="mt-14 space-y-14">
+          <Fila items={VISAS} cols="grid-cols-5" delay={0} />
+          <Fila items={UNIDAS} cols="grid-cols-3 sm:grid-cols-6" delay={0.1} />
+        </div>
       </div>
     </section>
   );
