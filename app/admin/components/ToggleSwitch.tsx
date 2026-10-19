@@ -14,6 +14,8 @@ export function ToggleSwitch({
   activeColor?: string;
   title?: string;
 }) {
+  const on = checked && !disabled;
+
   return (
     <button
       type="button"
@@ -22,13 +24,14 @@ export function ToggleSwitch({
       disabled={disabled}
       title={title}
       onClick={() => !disabled && onChange(!checked)}
-      style={{ backgroundColor: disabled ? undefined : checked ? activeColor : undefined }}
-      className={`relative h-[26px] w-[45px] shrink-0 rounded-full ring-1 ring-inset ring-black/10 transition-colors duration-200 ease-out ${
-        disabled
-          ? "cursor-not-allowed bg-white/8"
-          : checked
-            ? "cursor-pointer"
-            : "cursor-pointer bg-white/[0.14] hover:bg-white/[0.18]"
+      style={{
+        backgroundColor: disabled ? "#3a3a3c80" : on ? activeColor : "#3a3a3c",
+        boxShadow: on
+          ? `0 0 1px ${activeColor}, 0 0 10px 1px ${activeColor}99, 0 0 22px 2px ${activeColor}4d`
+          : "none",
+      }}
+      className={`relative h-[26px] w-[45px] shrink-0 rounded-full transition-[background-color,box-shadow] duration-200 ease-out ${
+        disabled ? "cursor-not-allowed" : "cursor-pointer hover:brightness-110"
       }`}
     >
       <motion.span
@@ -39,7 +42,7 @@ export function ToggleSwitch({
         className="absolute top-[2px] h-[22px] w-[22px] rounded-full bg-white"
         style={{
           boxShadow:
-            "0 3px 8px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.12), inset 0 0 0 0.5px rgba(0,0,0,0.04)",
+            "0 3px 8px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15), inset 0 0 0 0.5px rgba(0,0,0,0.04)",
         }}
       />
     </button>
