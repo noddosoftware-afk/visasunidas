@@ -243,9 +243,9 @@ export function ContactCTA() {
               <motion.button
                 whileHover={{ scale: 1.015 }}
                 whileTap={{ scale: 0.98 }}
-                className="mt-2 bg-brand px-6 py-4 text-[17px] font-semibold text-white"
+                className="mt-2 bg-brand px-6 py-4 text-[19px] font-semibold text-white"
               >
-                Enviar solicitud →
+                Enviar solicitud
               </motion.button>
             </form>
           )}

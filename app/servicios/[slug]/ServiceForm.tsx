@@ -260,9 +260,9 @@ export function ServiceForm({ service }: { service: Service }) {
       <motion.button
         whileHover={{ scale: 1.015 }}
         whileTap={{ scale: 0.98 }}
-        className="mt-1 rounded-full bg-brand py-4 text-[17px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(41,48,249,0.6)]"
+        className="mt-1 rounded-full bg-brand py-4 text-[19px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(41,48,249,0.6)]"
       >
-        Enviar solicitud →
+        Enviar solicitud
       </motion.button>
 
       <style jsx global>{`

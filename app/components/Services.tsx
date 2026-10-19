@@ -20,9 +20,9 @@ export function Services() {
           <Reveal delay={0.1}>
             <Link
               href="/servicios"
-              className="text-[17px] font-semibold text-brand underline-offset-4 hover:underline"
+              className="inline-flex items-center rounded-full border border-ink/15 px-6 py-3 text-[17px] font-semibold text-ink transition-all hover:scale-[1.03] hover:border-brand hover:text-brand active:scale-[0.97]"
             >
-              Ver los {SERVICES.length} servicios →
+              Ver los {SERVICES.length} servicios
             </Link>
           </Reveal>
         </div>
