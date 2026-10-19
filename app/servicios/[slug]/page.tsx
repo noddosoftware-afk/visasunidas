@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "../../components/Header";
 import { Footer } from "../../components/Footer";
@@ -37,7 +38,13 @@ export default async function ServicioDetalle({
       <Header />
       <main className="pt-32 pb-24">
         <div className="mx-auto max-w-2xl px-6">
-          <p className="text-[16px] font-semibold uppercase tracking-[0.2em] text-brand">
+          <Link
+            href="/"
+            className="text-[15px] font-medium text-ink/50 hover:text-brand"
+          >
+            ← Volver al inicio
+          </Link>
+          <p className="mt-6 text-[16px] font-semibold uppercase tracking-[0.2em] text-brand">
             Solicitar trámite
           </p>
           <h1 className="font-serif-display mt-4 text-[clamp(1.9rem,3.5vw,2.8rem)] font-medium">
