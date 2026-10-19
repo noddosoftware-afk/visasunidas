@@ -36,10 +36,10 @@ export function ToggleSwitch({
     >
       <motion.span
         initial={false}
-        animate={{ x: checked ? 20 : 2 }}
+        animate={{ x: checked ? 19 : 0 }}
         whileTap={disabled ? undefined : { scaleX: 1.15 }}
         transition={{ type: "spring", stiffness: 700, damping: 34 }}
-        className="absolute top-[2px] h-[22px] w-[22px] rounded-full bg-white"
+        className="absolute left-[2px] top-[2px] h-[22px] w-[22px] rounded-full bg-white"
         style={{
           boxShadow:
             "0 3px 8px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15), inset 0 0 0 0.5px rgba(0,0,0,0.04)",
