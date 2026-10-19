@@ -31,13 +31,8 @@ export function Hero() {
           visas, perdones legales y residencia americana.
         </p>
         <div className="flex flex-wrap items-center gap-5">
-          <Button href="#contacto">Agenda tu consulta →</Button>
-          <a
-            href="#servicios"
-            className="text-[17px] font-semibold text-white/85 underline-offset-4 hover:underline"
-          >
-            Ver servicios
-          </a>
+          <Button href="#contacto">Agenda tu consulta</Button>
+          <Button href="#servicios" variant="ghost">Ver servicios</Button>
         </div>
       </motion.div>
     </section>

@@ -39,10 +39,10 @@ export default async function ServicioDetalle({
       <main className="pt-32 pb-24">
         <div className="mx-auto max-w-2xl px-6">
           <Link
-            href="/#servicios"
-            className="text-[15px] font-medium text-ink/50 hover:text-brand"
+            href="/servicios"
+            className="inline-flex items-center rounded-full border border-ink/15 px-5 py-2.5 text-[15px] font-medium text-ink/70 transition-all hover:scale-[1.03] hover:border-brand hover:text-brand active:scale-[0.97]"
           >
-            ← Volver al inicio
+            Atrás
           </Link>
           <p className="mt-6 text-[16px] font-semibold uppercase tracking-[0.2em] text-brand">
             Solicitar trámite

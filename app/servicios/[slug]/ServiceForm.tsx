@@ -59,9 +59,9 @@ export function ServiceForm({ service }: { service: Service }) {
         </p>
         <Link
           href="/servicios"
-          className="mt-5 inline-block text-[15px] font-medium text-brand hover:underline"
+          className="mt-5 inline-flex items-center rounded-full border border-ink/15 px-5 py-2.5 text-[15px] font-medium text-ink/70 transition-all hover:scale-[1.03] hover:border-brand hover:text-brand active:scale-[0.97]"
         >
-          ← Ver otros servicios
+          Ver otros servicios
         </Link>
       </motion.div>
     );
@@ -84,9 +84,9 @@ export function ServiceForm({ service }: { service: Service }) {
         </p>
         <button
           onClick={resetElegibilidad}
-          className="mt-5 text-[15px] font-medium text-brand hover:underline"
+          className="mt-5 inline-flex items-center rounded-full border border-ink/15 px-5 py-2.5 text-[15px] font-medium text-ink/70 transition-all hover:scale-[1.03] hover:border-brand hover:text-brand active:scale-[0.97]"
         >
-          ← Volver al formulario
+          Volver al formulario
         </button>
       </motion.div>
     );

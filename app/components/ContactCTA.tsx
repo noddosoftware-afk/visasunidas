@@ -93,9 +93,9 @@ export function ContactCTA() {
               </p>
               <button
                 onClick={resetElegibilidad}
-                className="mt-5 text-[14px] font-medium text-gold hover:underline"
+                className="mt-5 inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-[14px] font-semibold text-white transition-all hover:scale-[1.03] hover:border-gold hover:text-gold active:scale-[0.97]"
               >
-                ← Volver al formulario
+                Volver al formulario
               </button>
             </motion.div>
           ) : (

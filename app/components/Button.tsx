@@ -15,7 +15,7 @@ export function Button({
     "inline-flex items-center gap-2 rounded-full px-8 py-4 text-[17px] font-semibold tracking-wide";
   const styles = {
     primary: "bg-brand text-white",
-    ghost: "border border-white/25 text-ink bg-transparent hover:border-white/50",
+    ghost: "border border-white/25 text-white bg-transparent hover:border-white/50 hover:bg-white/5",
     light: "bg-white text-ink",
   }[variant];
   return (
