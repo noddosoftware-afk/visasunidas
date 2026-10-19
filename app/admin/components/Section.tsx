@@ -6,7 +6,7 @@ import { IconChevronDown } from "./Icons";
 const TONE_STYLE: Record<string, string> = {
   brand: "bg-brand/15 text-[#8c91ff] ring-1 ring-inset ring-brand/30",
   gold: "bg-gold/15 text-gold ring-1 ring-inset ring-gold/30",
-  rose: "bg-rose/15 text-[#ff8079] ring-1 ring-inset ring-rose/30",
+  coral: "bg-coral/15 text-[#ff8079] ring-1 ring-inset ring-coral/30",
   emerald: "bg-emerald-400/15 text-emerald-300 ring-1 ring-inset ring-emerald-400/30",
   violet: "bg-violet-400/15 text-violet-300 ring-1 ring-inset ring-violet-400/30",
   sky: "bg-sky-400/15 text-sky-300 ring-1 ring-inset ring-sky-400/30",
@@ -16,7 +16,7 @@ const TONE_STYLE: Record<string, string> = {
 const BORDER_STYLE: Record<string, string> = {
   brand: "hover:border-brand/40",
   gold: "hover:border-gold/40",
-  rose: "hover:border-rose/40",
+  coral: "hover:border-coral/40",
   emerald: "hover:border-emerald-400/40",
   violet: "hover:border-violet-400/40",
   sky: "hover:border-sky-400/40",
@@ -36,7 +36,7 @@ export function Section({
   icon: ReactNode;
   title: string;
   subtitle?: string;
-  tone?: "brand" | "gold" | "rose" | "emerald" | "violet" | "sky" | "ink";
+  tone?: "brand" | "gold" | "coral" | "emerald" | "violet" | "sky" | "ink";
   right?: ReactNode;
   children: ReactNode;
   defaultOpen?: boolean;

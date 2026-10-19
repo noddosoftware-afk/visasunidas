@@ -72,7 +72,7 @@ export function ServiceForm({ service }: { service: Service }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="mt-10 rounded-3xl border border-rose/20 bg-rose/5 p-10 text-center"
+        className="mt-10 rounded-3xl border border-coral/20 bg-coral/5 p-10 text-center"
       >
         <p className="text-xl font-medium text-ink">
           Por ahora no podemos ayudar con este trámite.

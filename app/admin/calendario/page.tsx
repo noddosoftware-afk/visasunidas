@@ -225,7 +225,7 @@ export default function Calendario() {
                       await deleteEvento(e.id);
                       reload();
                     }}
-                    className="text-white/25 hover:text-rose"
+                    className="text-white/25 hover:text-coral"
                   >
                     <IconTrash className="h-3.5 w-3.5" />
                   </button>

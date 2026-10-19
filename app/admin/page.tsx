@@ -23,7 +23,7 @@ const VIABILIDADES: Viabilidad[] = ["Viable", "No viable", "Pendiente"];
 const PAGE_SIZE = 8;
 
 const PRIORIDAD_ACCENT: Record<Prioridad, string> = {
-  Alta: "border-l-4 border-l-rose",
+  Alta: "border-l-4 border-l-coral",
   Media: "border-l-4 border-l-gold",
   Baja: "border-l-4 border-l-white/15",
 };
@@ -154,9 +154,9 @@ export default function AdminDashboard() {
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-5">
         <StatCard label="Total" value={stats.total} icon={<IconLayoutDashboard className="h-4 w-4" />} tone="brand" />
         <StatCard label="Viables" value={stats.viables} icon={<IconShieldCheck className="h-4 w-4" />} tone="emerald" />
-        <StatCard label="No viables" value={stats.noViables} icon={<IconShieldCheck className="h-4 w-4" />} tone="rose" />
+        <StatCard label="No viables" value={stats.noViables} icon={<IconShieldCheck className="h-4 w-4" />} tone="coral" />
         <StatCard label="Pendientes de evaluar" value={stats.pendientes} icon={<IconShieldCheck className="h-4 w-4" />} tone="ink" />
-        <StatCard label="Alta prioridad, abiertas" value={stats.altaPrioridad} icon={<IconFlag className="h-4 w-4" />} tone="rose" />
+        <StatCard label="Alta prioridad, abiertas" value={stats.altaPrioridad} icon={<IconFlag className="h-4 w-4" />} tone="coral" />
       </div>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -347,7 +347,7 @@ export default function AdminDashboard() {
 const STAT_TONE: Record<string, { bg: string; text: string; bar: string; border: string }> = {
   brand: { bg: "bg-brand/15", text: "text-[#9ba0ff]", bar: "bg-brand", border: "hover:border-brand/40" },
   emerald: { bg: "bg-emerald-400/15", text: "text-emerald-300", bar: "bg-emerald-400", border: "hover:border-emerald-400/40" },
-  rose: { bg: "bg-rose/15", text: "text-[#ff8079]", bar: "bg-rose", border: "hover:border-rose/40" },
+  coral: { bg: "bg-coral/15", text: "text-[#ff8079]", bar: "bg-coral", border: "hover:border-coral/40" },
   ink: { bg: "bg-white/8", text: "text-white/70", bar: "bg-white/30", border: "hover:border-white/25" },
 };
 

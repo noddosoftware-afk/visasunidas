@@ -111,7 +111,7 @@ export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
                     reload();
                   }
                 }}
-                className="flex items-center gap-1 text-[13px] font-medium text-rose hover:underline"
+                className="flex items-center gap-1 text-[13px] font-medium text-coral hover:underline"
               >
                 <IconTrash className="h-3.5 w-3.5" />
               </button>

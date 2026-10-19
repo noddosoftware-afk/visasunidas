@@ -9,7 +9,7 @@ const VARIANTS: Record<string, string> = {
   outline:
     "border border-white/15 bg-white/5 text-white/70 hover:border-brand/50 hover:text-white",
   danger:
-    "border border-rose/30 bg-rose/5 text-[#ff8079] hover:bg-rose/15 hover:border-rose/50",
+    "border border-coral/30 bg-coral/5 text-[#ff8079] hover:bg-coral/15 hover:border-coral/50",
 };
 
 export function PanelButton({

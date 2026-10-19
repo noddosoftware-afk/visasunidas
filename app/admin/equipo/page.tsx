@@ -23,7 +23,7 @@ const AVATAR_TONES = [
   "bg-brand/15 text-[#9ba0ff]",
   "bg-gold/15 text-gold",
   "bg-emerald-400/15 text-emerald-300",
-  "bg-rose/15 text-[#ff8079]",
+  "bg-coral/15 text-[#ff8079]",
   "bg-violet-400/15 text-violet-300",
   "bg-sky-400/15 text-sky-300",
 ];
@@ -143,7 +143,7 @@ export default function Equipo() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-2 text-[13px] text-rose"
+          className="mt-2 text-[13px] text-coral"
         >
           {error}
         </motion.p>
@@ -191,7 +191,7 @@ export default function Equipo() {
                       </span>
                     )}
                     {!u.activo && (
-                      <span className="rounded-full bg-rose/10 px-2 py-0.5 text-[11px] font-semibold text-rose">
+                      <span className="rounded-full bg-coral/10 px-2 py-0.5 text-[11px] font-semibold text-coral">
                         Apagada
                       </span>
                     )}
@@ -233,30 +233,49 @@ export default function Equipo() {
                   </span>
                 </td>
                 <td className="px-5 py-3">
-                  <ToggleSwitch
-                    checked={u.activo}
-                    disabled={!esAdmin}
-                    activeColor="bg-emerald-500"
-                    onChange={async (next) => {
-                      if (!next) {
-                        setConfirmarApagar(u);
-                        return;
+                  <div className="flex flex-col items-start gap-1">
+                    <ToggleSwitch
+                      checked={u.activo}
+                      disabled={!esAdmin || u.id === currentUserId}
+                      title={
+                        u.id === currentUserId
+                          ? "No puedes apagar tu propia cuenta"
+                          : undefined
                       }
-                      await setActivo(u.id, true);
-                      reload();
-                    }}
-                  />
+                      onChange={async (next) => {
+                        if (!next) {
+                          setConfirmarApagar(u);
+                          return;
+                        }
+                        await setActivo(u.id, true);
+                        reload();
+                      }}
+                    />
+                    <span className="text-[11px] font-medium text-white/35">
+                      {u.activo ? "Encendida" : "Apagada"}
+                    </span>
+                  </div>
                 </td>
                 <td className="px-5 py-3">
-                  <ToggleSwitch
-                    checked={u.pausado}
-                    disabled={!esAdmin}
-                    activeColor="bg-gold"
-                    onChange={async (next) => {
-                      await setPausado(u.id, next);
-                      reload();
-                    }}
-                  />
+                  <div className="flex flex-col items-start gap-1">
+                    <ToggleSwitch
+                      checked={u.pausado}
+                      disabled={!esAdmin || u.id === currentUserId}
+                      activeColor="#c9973f"
+                      title={
+                        u.id === currentUserId
+                          ? "No puedes pausar tu propia cuenta"
+                          : undefined
+                      }
+                      onChange={async (next) => {
+                        await setPausado(u.id, next);
+                        reload();
+                      }}
+                    />
+                    <span className="text-[11px] font-medium text-white/35">
+                      {u.pausado ? "Pausada" : "Normal"}
+                    </span>
+                  </div>
                 </td>
                 <td className="px-5 py-3 text-right">
                   {users.length > 1 && (
@@ -267,7 +286,7 @@ export default function Equipo() {
                           reload();
                         }
                       }}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-rose hover:underline"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-coral hover:underline"
                     >
                       <IconTrash className="h-3.5 w-3.5" />
                       Quitar
@@ -311,22 +330,24 @@ export default function Equipo() {
                 encenderla. Se quedará apagada por tiempo indefinido.
               </p>
               <div className="mt-6 flex gap-3">
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => setConfirmarApagar(null)}
-                  className="flex-1 rounded-xl border-2 border-emerald-500 py-2.5 text-[14px] font-semibold text-emerald-600 transition-colors hover:bg-emerald-50"
+                  className="flex-1 rounded-xl border border-emerald-400/40 bg-emerald-400/10 py-2.5 text-[14px] font-semibold text-emerald-300 transition-colors hover:bg-emerald-400/20"
                 >
                   Cancelar
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
                   onClick={async () => {
                     await setActivo(confirmarApagar.id, false);
                     reload();
                     setConfirmarApagar(null);
                   }}
-                  className="flex-1 rounded-xl bg-rose py-2.5 text-[14px] font-semibold text-white transition-colors hover:brightness-95"
+                  className="flex-1 rounded-xl bg-coral py-2.5 text-[14px] font-semibold text-white transition-colors hover:brightness-110"
                 >
                   Sí, continuar
-                </button>
+                </motion.button>
               </div>
             </motion.div>
           </>

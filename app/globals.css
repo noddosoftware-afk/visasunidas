@@ -8,7 +8,7 @@
   --brand: #2930f9;
   --brand-deep: #1b21c4;
   --gold: #c9973f;
-  --rose: #e2483f;
+  --coral: #e2483f;
   --muted: #6b7080;
 }
 
@@ -20,7 +20,7 @@
   --color-brand: var(--brand);
   --color-brand-deep: var(--brand-deep);
   --color-gold: var(--gold);
-  --color-rose: var(--rose);
+  --color-coral: var(--coral);
   --color-muted: var(--muted);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);

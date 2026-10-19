@@ -5,12 +5,14 @@ export function ToggleSwitch({
   checked,
   onChange,
   disabled,
-  activeColor = "bg-emerald-500",
+  activeColor = "#30d158",
+  title,
 }: {
   checked: boolean;
   onChange: (next: boolean) => void;
   disabled?: boolean;
   activeColor?: string;
+  title?: string;
 }) {
   return (
     <button
@@ -18,15 +20,27 @@ export function ToggleSwitch({
       role="switch"
       aria-checked={checked}
       disabled={disabled}
+      title={title}
       onClick={() => !disabled && onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 ${
-        checked ? activeColor : "bg-white/15"
-      } ${disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"}`}
+      style={{ backgroundColor: disabled ? undefined : checked ? activeColor : undefined }}
+      className={`relative h-[26px] w-[45px] shrink-0 rounded-full ring-1 ring-inset ring-black/10 transition-colors duration-200 ease-out ${
+        disabled
+          ? "cursor-not-allowed bg-white/8"
+          : checked
+            ? "cursor-pointer"
+            : "cursor-pointer bg-white/[0.14] hover:bg-white/[0.18]"
+      }`}
     >
       <motion.span
+        initial={false}
         animate={{ x: checked ? 20 : 2 }}
-        transition={{ type: "spring", stiffness: 500, damping: 32 }}
-        className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.35)]"
+        whileTap={disabled ? undefined : { scaleX: 1.15 }}
+        transition={{ type: "spring", stiffness: 700, damping: 34 }}
+        className="absolute top-[2px] h-[22px] w-[22px] rounded-full bg-white"
+        style={{
+          boxShadow:
+            "0 3px 8px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.12), inset 0 0 0 0.5px rgba(0,0,0,0.04)",
+        }}
       />
     </button>
   );

@@ -295,7 +295,7 @@ export default function SolicitudDetalle({
                         await removeDocumentoPersonalizado(id, doc.id);
                         reload();
                       }}
-                      className="text-[12px] text-rose hover:underline"
+                      className="text-[12px] text-coral hover:underline"
                     >
                       Quitar
                     </button>
@@ -338,7 +338,7 @@ export default function SolicitudDetalle({
           icon={<IconShieldCheck />}
           title="Preguntas clave de viabilidad"
           subtitle="Determina si este caso es atendible según su situación."
-          tone={viabilidad === "No viable" ? "rose" : viabilidad === "Viable" ? "emerald" : "ink"}
+          tone={viabilidad === "No viable" ? "coral" : viabilidad === "Viable" ? "emerald" : "ink"}
         >
           <div className="space-y-4">
             {preguntas.length === 0 && (
@@ -369,7 +369,7 @@ export default function SolicitudDetalle({
                         className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
                           valor === opt.val
                             ? opt.val === p.redFlag
-                              ? "bg-rose text-white"
+                              ? "bg-coral text-white"
                               : "bg-brand text-white"
                             : "bg-white/8 text-white/45 hover:bg-white/15"
                         }`}

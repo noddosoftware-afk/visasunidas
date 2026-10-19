@@ -122,7 +122,7 @@ export function AgendaCaso({ solicitudId }: { solicitudId: string }) {
                 await deleteEvento(e.id);
                 reload();
               }}
-              className="text-white/25 hover:text-rose"
+              className="text-white/25 hover:text-coral"
             >
               <IconTrash className="h-3.5 w-3.5" />
             </button>
