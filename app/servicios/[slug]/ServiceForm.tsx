@@ -157,7 +157,7 @@ export function ServiceForm({ service }: { service: Service }) {
             setParaQuien(e.target.value as ParaQuien);
             resetElegibilidad();
           }}
-          className="input"
+          className="input sel sel-dark"
         >
           <option value="yo">Es para mí</option>
           <option value="otra">Es para otra persona</option>
@@ -170,7 +170,7 @@ export function ServiceForm({ service }: { service: Service }) {
             required
             value={nacionalidadPropia}
             onChange={(e) => evaluarNacionalidad(e.target.value, false)}
-            className="input"
+            className="input sel sel-dark"
           >
             <option value="" disabled>
               Selecciona una opción
@@ -216,7 +216,7 @@ export function ServiceForm({ service }: { service: Service }) {
                   required
                   value={nacionalidadPersona}
                   onChange={(e) => evaluarNacionalidad(e.target.value, true)}
-                  className="input"
+                  className="input sel sel-dark"
                 >
                   <option value="" disabled>
                     Selecciona una opción
@@ -237,7 +237,7 @@ export function ServiceForm({ service }: { service: Service }) {
         <select
           value={variante}
           onChange={(e) => setVariante(e.target.value)}
-          className="input"
+          className="input sel sel-dark"
         >
           {service.variantes.map((v) => (
             <option key={v} value={v}>

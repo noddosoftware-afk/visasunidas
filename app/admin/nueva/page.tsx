@@ -93,7 +93,7 @@ export default function NuevaSolicitud() {
                 setTramiteSlug(next.slug);
                 setVariante(next.variantes[0]);
               }}
-              className="input"
+              className="input sel"
             >
               {SERVICES.map((s) => (
                 <option key={s.slug} value={s.slug}>
@@ -108,7 +108,7 @@ export default function NuevaSolicitud() {
               <select
                 value={variante}
                 onChange={(e) => setVariante(e.target.value)}
-                className="input"
+                className="input sel"
               >
                 {tramite.variantes.map((v) => (
                   <option key={v} value={v}>
@@ -125,7 +125,7 @@ export default function NuevaSolicitud() {
             <select
               value={prioridad}
               onChange={(e) => setPrioridad(e.target.value as Prioridad)}
-              className="input"
+              className="input sel"
             >
               {PRIORIDADES.map((p) => (
                 <option key={p} value={p}>

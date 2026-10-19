@@ -163,7 +163,7 @@ export default function AdminDashboard() {
         <select
           value={tramiteFiltro}
           onChange={(e) => actualizarFiltro(setTramiteFiltro)(e.target.value)}
-          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25 sel"
         >
           <option value="todos">Todos los trámites</option>
           {SERVICES.map((s) => (
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
           onChange={(e) =>
             actualizarFiltro(setEstadoFiltro)(e.target.value as Estado | "todos")
           }
-          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25 sel"
         >
           <option value="todos">Todos los estados</option>
           {ESTADOS.map((e) => (
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
               e.target.value as Prioridad | "todos"
             )
           }
-          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25 sel"
         >
           <option value="todos">Prioridad (todas)</option>
           {PRIORIDADES.map((p) => (
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
               e.target.value as Viabilidad | "todos"
             )
           }
-          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
+          className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25 sel"
         >
           <option value="todos">Viabilidad (todas)</option>
           {VIABILIDADES.map((v) => (

@@ -54,7 +54,7 @@ export function ArchivosSection({ solicitudId }: { solicitudId: string }) {
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value as CategoriaArchivo)}
-          className="rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm"
+          className="rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm sel"
         >
           {CATEGORIAS_ARCHIVO.map((c) => (
             <option key={c} value={c}>

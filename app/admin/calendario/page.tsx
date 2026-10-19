@@ -153,7 +153,7 @@ export default function Calendario() {
                 <select
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value as TipoEvento)}
-                  className="rounded-lg border border-white/12 bg-white/5 px-2.5 py-2 text-[13px] text-white/80"
+                  className="rounded-lg border border-white/12 bg-white/5 px-2.5 py-2 text-[13px] text-white/80 sel"
                 >
                   {TIPOS_EVENTO.map((t) => (
                     <option key={t} value={t}>
@@ -177,7 +177,7 @@ export default function Calendario() {
               <select
                 value={solicitudId}
                 onChange={(e) => setSolicitudId(e.target.value)}
-                className="w-full rounded-lg border border-white/12 bg-white/5 px-2.5 py-2 text-[13px] text-white/80"
+                className="w-full rounded-lg border border-white/12 bg-white/5 px-2.5 py-2 text-[13px] text-white/80 sel"
               >
                 <option value="">Sin vincular a ningún caso</option>
                 {solicitudes.map((s) => (

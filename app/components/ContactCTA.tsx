@@ -140,7 +140,7 @@ export function ContactCTA() {
                     setParaQuien(e.target.value as ParaQuien);
                     resetElegibilidad();
                   }}
-                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
+                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink sel"
                 >
                   <option value="yo">Es para mí</option>
                   <option value="otra">Es para otra persona</option>
@@ -154,7 +154,7 @@ export function ContactCTA() {
                     required
                     value={nacionalidadPropia}
                     onChange={(e) => evaluarNacionalidad(e.target.value, false)}
-                    className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
+                    className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink sel"
                   >
                     <option value="" disabled>
                       Selecciona una opción
@@ -203,7 +203,7 @@ export function ContactCTA() {
                           required
                           value={nacionalidadPersona}
                           onChange={(e) => evaluarNacionalidad(e.target.value, true)}
-                          className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
+                          className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink sel"
                         >
                           <option value="" disabled>
                             Selecciona una opción
@@ -226,7 +226,7 @@ export function ContactCTA() {
                   required
                   value={tramiteSlug}
                   onChange={(e) => setTramiteSlug(e.target.value)}
-                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink"
+                  className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink sel"
                 >
                   <option value="" disabled>
                     Selecciona una opción

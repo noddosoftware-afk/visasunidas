@@ -78,7 +78,7 @@ export function AgendaCaso({ solicitudId }: { solicitudId: string }) {
         <select
           value={tipo}
           onChange={(e) => setTipo(e.target.value as TipoEvento)}
-          className="rounded-lg border border-white/12 bg-white/5 text-white/80 px-2.5 py-2 text-[13px]"
+          className="rounded-lg border border-white/12 bg-white/5 text-white/80 px-2.5 py-2 text-[13px] sel"
         >
           {TIPOS_EVENTO.map((t) => (
             <option key={t} value={t}>

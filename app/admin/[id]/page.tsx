@@ -158,7 +158,7 @@ export default function SolicitudDetalle({
                   await updateEstado(id, e.target.value as Estado);
                   reload();
                 }}
-                className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
+                className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25 sel"
               >
                 {ESTADOS.map((e) => (
                   <option key={e} value={e}>
@@ -178,7 +178,7 @@ export default function SolicitudDetalle({
                   await updatePrioridad(id, e.target.value as Prioridad);
                   reload();
                 }}
-                className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25"
+                className="rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm text-white/80 transition-colors hover:border-white/25 sel"
               >
                 {PRIORIDADES.map((p) => (
                   <option key={p} value={p}>

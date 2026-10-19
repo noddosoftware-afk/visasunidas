@@ -41,3 +41,23 @@ body {
 .font-serif-display {
   font-family: var(--font-serif);
 }
+
+/* Custom <select> chevron: native browser arrows sit flush against the
+   edge with no padding and never match the surrounding field styling. */
+.sel {
+  appearance: none;
+  -webkit-appearance: none;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 10px 7px !important;
+  padding-right: 2.25rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2012%208%22%3E%3Cpath%20d%3D%22M1%201.5L6%206.5L11%201.5%22%20stroke%3D%22rgba(255%2C255%2C255%2C0.55)%22%20stroke-width%3D%221.6%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+}
+.sel-dark {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2012%208%22%3E%3Cpath%20d%3D%22M1%201.5L6%206.5L11%201.5%22%20stroke%3D%22rgba(10%2C14%2C42%2C0.55)%22%20stroke-width%3D%221.6%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+}
+.sel-sm {
+  background-position: right 0.55rem center !important;
+  background-size: 8px 6px !important;
+  padding-right: 1.5rem !important;
+}

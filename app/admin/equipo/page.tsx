@@ -126,7 +126,7 @@ export default function Equipo() {
         <select
           value={rol}
           onChange={(e) => setRol(e.target.value as Rol)}
-          className="rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm outline-none transition-colors focus:border-brand"
+          className="rounded-xl border border-white/12 bg-white/5 text-white/80 px-3 py-2 text-sm outline-none transition-colors focus:border-brand sel"
         >
           {ROLES.map((r) => (
             <option key={r} value={r}>
@@ -210,7 +210,7 @@ export default function Equipo() {
                         await updateRol(u.id, e.target.value as Rol);
                         reload();
                       }}
-                      className={`rounded-full border-0 px-2.5 py-1 text-[12px] font-medium outline-none ${ROL_STYLE[u.rol]}`}
+                      className={`rounded-full border-0 px-2.5 py-1 text-[12px] font-medium outline-none sel sel-sm ${ROL_STYLE[u.rol]}`}
                     >
                       {ROLES.map((r) => (
                         <option key={r} value={r}>
