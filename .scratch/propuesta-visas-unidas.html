@@ -1,0 +1,668 @@
+<title>Propuesta Visas Unidas</title>
+
+<style>
+  :root {
+    --ink: #0a0e2a;
+    --ink-soft: #4a4e68;
+    --paper: #faf8f3;
+    --paper-dim: #f1ede2;
+    --line: #e4ddc9;
+    --brand: #2930f9;
+    --brand-deep: #1b21c4;
+    --gold: #c9973f;
+    --gold-soft: #fbf3e4;
+    --good: #1f7a4d;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #f3f1ea;
+      --ink-soft: #b8bad0;
+      --paper: #0c0e1c;
+      --paper-dim: #12142a;
+      --line: #262a46;
+      --brand: #6b72ff;
+      --brand-deep: #8d93ff;
+      --gold: #e3b465;
+      --gold-soft: #211a0f;
+      --good: #4fb787;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #f3f1ea;
+    --ink-soft: #b8bad0;
+    --paper: #0c0e1c;
+    --paper-dim: #12142a;
+    --line: #262a46;
+    --brand: #6b72ff;
+    --brand-deep: #8d93ff;
+    --gold: #e3b465;
+    --gold-soft: #211a0f;
+    --good: #4fb787;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .doc {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 28px 120px;
+  }
+
+  h1, h2, h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* ---------- header ---------- */
+  .mast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .mast-name {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .mast-tag {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .doc-title {
+    margin-top: 48px;
+  }
+  .doc-kicker {
+    font-size: 14px;
+    color: var(--brand);
+    font-weight: 600;
+  }
+  .doc-title h1 {
+    margin-top: 10px;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    line-height: 1.08;
+  }
+  .doc-sub {
+    margin-top: 18px;
+    max-width: 58ch;
+    font-size: 18px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  /* ---------- sections ---------- */
+  section {
+    margin-top: 72px;
+  }
+  .sec-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  section h2 {
+    margin-top: 10px;
+    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+  }
+  .sec-intro {
+    margin-top: 16px;
+    max-width: 62ch;
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* ---------- value list ---------- */
+  .value-grid {
+    margin-top: 32px;
+    display: grid;
+    gap: 22px;
+  }
+  @media (min-width: 640px) {
+    .value-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .value-item {
+    padding: 20px 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .value-item h3 {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .value-item p {
+    margin: 8px 0 0;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .time-callout {
+    margin-top: 32px;
+    padding: 24px 26px;
+    background: var(--paper-dim);
+    border-radius: 4px;
+  }
+  .time-callout .num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 2.6rem;
+    font-weight: 500;
+    color: var(--brand);
+    line-height: 1;
+  }
+  .time-callout p {
+    margin: 10px 0 0;
+    max-width: 52ch;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ---------- pricing table ---------- */
+  .price-table {
+    margin-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .price-row .meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .price-row .meta .name {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .price-row .meta .desc {
+    margin-top: 6px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 48ch;
+  }
+  .price-row .amount {
+    flex-shrink: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .price-row .amount .num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .price-row .amount .per {
+    display: block;
+    margin-top: 2px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .tag {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  .tag.included { background: var(--gold-soft); color: var(--gold); }
+  .tag.optional { background: var(--paper-dim); color: var(--ink-soft); }
+
+  .term-note {
+    margin-top: 18px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .term-note strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- tiers (desarrollo adicional) ---------- */
+  .tiers {
+    margin-top: 32px;
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 640px) {
+    .tiers { grid-template-columns: repeat(3, 1fr); }
+  }
+  .tier {
+    padding: 22px 20px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .tier .tier-name {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+  .tier .tier-price {
+    margin-top: 10px;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.5rem;
+    color: var(--ink);
+  }
+  .tier .tier-price small {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .tier p {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  /* ---------- extras ---------- */
+  .extra {
+    margin-top: 32px;
+    padding: 28px 28px 30px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .extra + .extra { margin-top: 20px; }
+  .extra-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .extra-head h3 {
+    font-size: 19px;
+    font-weight: 500;
+  }
+  .extra-head .price {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .extra-head .price .num {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.6rem;
+    white-space: nowrap;
+  }
+  .extra-head .price .per {
+    display: block;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .extra-desc {
+    margin-top: 10px;
+    max-width: 56ch;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  /* ---------- ROI illustration ---------- */
+  .roi {
+    margin-top: 24px;
+    padding: 24px 24px 26px;
+    background: var(--gold-soft);
+    border-radius: 6px;
+  }
+  .roi-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+  }
+  .roi-steps {
+    margin-top: 16px;
+    display: grid;
+    gap: 14px;
+  }
+  .roi-step {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .roi-step:last-of-type { border-bottom: none; padding-bottom: 0; }
+  .roi-step .label {
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .roi-step .label small {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .roi-step .value {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .roi-result {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .roi-result .label {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .roi-result .value {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 2rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .roi-foot {
+    margin-top: 16px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ---------- close ---------- */
+  .close {
+    margin-top: 88px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+  .close .company {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-in {
+      animation: fadeUp 0.5s ease-out both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  @media print {
+    @page { size: Letter; margin: 0.5in 0.55in; }
+    html, body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .doc { max-width: none; padding: 0; }
+    section, .extra, .time-callout, .roi { break-inside: avoid; }
+    .price-row, .value-item, .tier { break-inside: avoid; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="doc">
+
+  <div class="mast fade-in">
+    <span class="mast-name">Visas Unidas</span>
+    <span class="mast-tag">Propuesta técnica</span>
+  </div>
+
+  <div class="doc-title fade-in">
+    <p class="doc-kicker">Noddo Software · plataforma web y panel administrativo</p>
+    <h1>propuesta de inversión</h1>
+    <p class="doc-sub">
+      Qué incluye la plataforma construida para Visas Unidas, su costo,
+      los servicios de mantenimiento disponibles y los módulos adicionales
+      que pueden sumarse más adelante.
+    </p>
+  </div>
+
+  <section>
+    <p class="sec-label">Qué incluye</p>
+    <h2>Una sola plataforma para el sitio y la operación diaria</h2>
+    <p class="sec-intro">
+      La plataforma reúne dos piezas que hoy normalmente viven separadas:
+      el sitio público donde los clientes encuentran a Visas Unidas y llenan
+      su solicitud, y el panel interno donde el equipo da seguimiento a cada
+      expediente. Ambas quedan conectadas: una solicitud nueva en el sitio
+      aparece de inmediato en el panel, sin captura manual.
+    </p>
+
+    <div class="value-grid">
+      <div class="value-item">
+        <h3>Sitio público</h3>
+        <p>Presenta los trámites, responde las preguntas de elegibilidad por
+        nacionalidad y captura la solicitud completa del cliente.</p>
+      </div>
+      <div class="value-item">
+        <h3>Expedientes centralizados</h3>
+        <p>Cada caso con sus fases, documentos y notas en un solo lugar,
+        visible para todo el equipo a la vez.</p>
+      </div>
+      <div class="value-item">
+        <h3>Agenda del despacho</h3>
+        <p>Calendario de llamadas y citas por expediente, sin agendas
+        sueltas ni recordatorios por separado.</p>
+      </div>
+      <div class="value-item">
+        <h3>Equipo con roles</h3>
+        <p>Cada persona entra con su propio acceso; solo un administrador
+        puede activar, pausar o dar de baja una cuenta.</p>
+      </div>
+    </div>
+
+    <div class="time-callout">
+      <p class="num">+6 horas al mes</p>
+      <p>
+        Es el tiempo administrativo que un despacho con 30&ndash;40
+        expedientes activos recupera cuando deja de buscar documentos
+        sueltos, cuadernos y hojas de cálculo para saber en qué va cada
+        caso &mdash; estimado a partir de 10&ndash;15 minutos ahorrados
+        por expediente al mes.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <p class="sec-label">Inversión</p>
+    <h2>Costo de la plataforma</h2>
+    <p class="sec-intro">
+      Un pago único por el desarrollo completo, más el hosting necesario
+      para mantener la base de datos y los archivos en línea.
+    </p>
+
+    <div class="price-table">
+      <div class="price-row">
+        <div class="meta">
+          <span class="name">Plataforma completa<span class="tag included">dominio incluido</span></span>
+          <p class="desc">Diseño y desarrollo del sitio público y el panel
+          administrativo descritos arriba. Incluye la conexión de tu
+          dominio sin costo adicional.</p>
+        </div>
+        <div class="amount">
+          <span class="num">$22,000</span>
+          <span class="per">pago único</span>
+        </div>
+      </div>
+
+      <div class="price-row">
+        <div class="meta">
+          <span class="name">Hosting de base de datos</span>
+          <p class="desc">Mantiene en línea los expedientes, documentos y
+          archivos subidos al panel. Inicia al confirmarse el pago de la
+          plataforma.</p>
+        </div>
+        <div class="amount">
+          <span class="num">$599</span>
+          <span class="per">al mes</span>
+        </div>
+      </div>
+
+      <div class="price-row">
+        <div class="meta">
+          <span class="name">Mantenimiento<span class="tag optional">opcional</span></span>
+          <p class="desc">Cambios menores, soporte directo y
+          actualizaciones del sistema. No cubre desarrollo nuevo ni
+          cambios de alcance mayor &mdash; ver sección siguiente.</p>
+        </div>
+        <div class="amount">
+          <span class="num">$399</span>
+          <span class="per">al mes</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="term-note">
+      El hosting puede contratarse por <strong>permanencia de 6 o de 12
+      meses</strong>, ambos a la misma tarifa mensual de $599; la
+      diferencia es únicamente el periodo que se confirma por adelantado.
+    </p>
+  </section>
+
+  <section>
+    <p class="sec-label">Fuera del mantenimiento</p>
+    <h2>Desarrollo adicional</h2>
+    <p class="sec-intro">
+      El mantenimiento cubre ajustes menores. Un cambio de carga pesada
+      &mdash; una sección nueva, una integración, un rediseño de una
+      pantalla &mdash; se cotiza aparte, bajo una de estas modalidades:
+    </p>
+
+    <div class="tiers">
+      <div class="tier">
+        <p class="tier-name">Por hora</p>
+        <p class="tier-price">$200 <small>/ hora</small></p>
+        <p>Para cambios puntuales que no justifican una bolsa mensual.</p>
+      </div>
+      <div class="tier">
+        <p class="tier-name">Bolsa mensual</p>
+        <p class="tier-price">$1,500 <small>/ mes</small></p>
+        <p>Horas al mes a tarifa preferente, para quien necesita ajustes
+        de forma constante.</p>
+      </div>
+      <div class="tier">
+        <p class="tier-name">Por proyecto externo</p>
+        <p class="tier-price">A cotizar</p>
+        <p>Para un alcance mayor definido de antemano &mdash; se cotiza
+        una vez descrito el proyecto.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="sec-label">Servicios extra</p>
+    <h2>Módulos opcionales</h2>
+    <p class="sec-intro">
+      No forman parte del paquete base; se suman cuando el despacho esté
+      listo para dar el siguiente paso.
+    </p>
+
+    <div class="extra">
+      <div class="extra-head">
+        <h3>WhatsApp integrado al panel</h3>
+        <div class="price">
+          <span class="num">$3,000</span>
+          <span class="per">pago único</span>
+        </div>
+      </div>
+      <p class="extra-desc">
+        Los mensajes de WhatsApp del despacho llegan directo al panel,
+        junto al expediente del cliente &mdash; sin cambiar de aplicación
+        para ver con quién se está hablando.
+      </p>
+    </div>
+
+    <div class="extra">
+      <div class="extra-head">
+        <h3>Asistente con IA para llamadas y mensajes</h3>
+        <div class="price">
+          <span class="num">$5,999</span>
+          <span class="per">al mes</span>
+        </div>
+      </div>
+      <p class="extra-desc">
+        Contesta llamadas y mensajes del despacho las 24 horas, con las
+        respuestas y el tono configurados para Visas Unidas, y registra
+        cada contacto directo en el panel.
+      </p>
+
+      <div class="roi">
+        <p class="roi-label">Ejemplo ilustrativo &mdash; no son cifras de Visas Unidas</p>
+        <div class="roi-steps">
+          <div class="roi-step">
+            <span class="label">Llamadas y mensajes recibidos al mes
+              <small>combinando ambos canales</small>
+            </span>
+            <span class="value">250</span>
+          </div>
+          <div class="roi-step">
+            <span class="label">Se pierden o no reciben seguimiento a tiempo
+              <small>fuera de horario, líneas ocupadas, se les pasa</small>
+            </span>
+            <span class="value">50 (20%)</span>
+          </div>
+          <div class="roi-step">
+            <span class="label">Se habrían convertido en caso si se hubieran atendido
+              <small>tasa de conversión conservadora</small>
+            </span>
+            <span class="value">~8 (15%)</span>
+          </div>
+          <div class="roi-step">
+            <span class="label">Valor promedio estimado por caso
+              <small>ajustar con el promedio real del despacho</small>
+            </span>
+            <span class="value">$700</span>
+          </div>
+        </div>
+        <div class="roi-result">
+          <span class="label">Ingreso potencialmente perdido al mes</span>
+          <span class="value">≈ $5,600</span>
+        </div>
+        <p class="roi-foot">
+          Con recuperar 8 o 9 casos al mes que hoy se pierden por falta de
+          respuesta inmediata, el servicio se paga solo &mdash; y cada
+          caso adicional es ganancia directa, sin contar el valor de
+          responder 24/7 y no dejar ningún mensaje sin contestar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="close">
+    <p class="company">Atentamente, Noddo Software</p>
+  </div>
+
+</div>

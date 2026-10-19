@@ -39,7 +39,7 @@ export default async function ServicioDetalle({
       <main className="pt-32 pb-24">
         <div className="mx-auto max-w-2xl px-6">
           <Link
-            href="/"
+            href="/#servicios"
             className="text-[15px] font-medium text-ink/50 hover:text-brand"
           >
             ← Volver al inicio

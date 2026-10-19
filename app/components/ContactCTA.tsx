@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SERVICES } from "../content";
 import { NACIONALIDADES, esElegiblePorNacionalidad, type Nacionalidad } from "../lib/nacionalidad";
+import { UBICACIONES, esElegiblePorUbicacion, type Ubicacion } from "../lib/ubicacion";
 import { createSolicitud } from "../admin/lib/storage";
 import { Reveal } from "./Reveal";
 
@@ -14,6 +15,8 @@ export function ContactCTA() {
   const [paraQuien, setParaQuien] = useState<ParaQuien>("yo");
   const [nacionalidadPropia, setNacionalidadPropia] = useState<Nacionalidad | "">("");
   const [nacionalidadPersona, setNacionalidadPersona] = useState<Nacionalidad | "">("");
+  const [ubicacionPropia, setUbicacionPropia] = useState<Ubicacion | "">("");
+  const [ubicacionPersona, setUbicacionPersona] = useState<Ubicacion | "">("");
   const [personaNombre, setPersonaNombre] = useState("");
   const [personaTelefono, setPersonaTelefono] = useState("");
   const [contactoNombre, setContactoNombre] = useState("");
@@ -30,10 +33,22 @@ export function ContactCTA() {
     }
   }
 
+  function evaluarUbicacion(valor: string, deOtraPersona: boolean) {
+    const u = valor as Ubicacion;
+    if (deOtraPersona) setUbicacionPersona(u);
+    else setUbicacionPropia(u);
+
+    if (!esElegiblePorUbicacion(u)) {
+      setNoElegible(true);
+    }
+  }
+
   function resetElegibilidad() {
     setNoElegible(false);
     setNacionalidadPropia("");
     setNacionalidadPersona("");
+    setUbicacionPropia("");
+    setUbicacionPersona("");
   }
 
   return (
@@ -73,9 +88,8 @@ export function ContactCTA() {
                 Por ahora no podemos ayudar con este trámite.
               </p>
               <p className="mt-2 text-[17px] text-white/70">
-                Nuestros servicios están enfocados en personas de nacionalidad
-                mexicana o estadounidense. Te recomendamos buscar asesoría
-                específica para este caso.
+                Solo contamos con atención en México y Estados Unidos. Te
+                recomendamos buscar asesoría específica para este caso.
               </p>
               <button
                 onClick={resetElegibilidad}
@@ -109,6 +123,10 @@ export function ContactCTA() {
               }}
               className="grid gap-4 bg-white/[0.06] p-7 text-left md:p-9"
             >
+              <p className="text-[14px] leading-relaxed text-gold">
+                Solo contamos con atención en México y Estados Unidos.
+              </p>
+
               <label className="text-[14px] font-medium text-white/60">
                 Nombre completo (quien llena este formulario)
                 <input
@@ -148,6 +166,25 @@ export function ContactCTA() {
               </label>
 
               {paraQuien === "yo" ? (
+                <>
+                <label className="text-[14px] font-medium text-white/60">
+                  ¿Dónde estás ubicado?
+                  <select
+                    required
+                    value={ubicacionPropia}
+                    onChange={(e) => evaluarUbicacion(e.target.value, false)}
+                    className="mt-2 w-full bg-white/10 px-4 py-3.5 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink sel"
+                  >
+                    <option value="" disabled>
+                      Selecciona una opción
+                    </option>
+                    {UBICACIONES.map((u) => (
+                      <option key={u} value={u}>
+                        {u}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label className="text-[14px] font-medium text-white/60">
                   Tu nacionalidad
                   <select
@@ -166,6 +203,7 @@ export function ContactCTA() {
                     ))}
                   </select>
                 </label>
+                </>
               ) : (
                 <AnimatePresence>
                   <motion.div
@@ -196,6 +234,24 @@ export function ContactCTA() {
                           placeholder="(55) 0000 0000"
                           className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white placeholder:text-white/35 outline-none transition-colors focus:bg-white/[0.16]"
                         />
+                      </label>
+                      <label className="text-[14px] font-medium text-white/55">
+                        ¿Dónde está ubicada la persona?
+                        <select
+                          required
+                          value={ubicacionPersona}
+                          onChange={(e) => evaluarUbicacion(e.target.value, true)}
+                          className="mt-2 w-full bg-white/10 px-4 py-3 text-[17px] text-white outline-none transition-colors focus:bg-white/[0.16] [&>option]:text-ink sel"
+                        >
+                          <option value="" disabled>
+                            Selecciona una opción
+                          </option>
+                          {UBICACIONES.map((u) => (
+                            <option key={u} value={u}>
+                              {u}
+                            </option>
+                          ))}
+                        </select>
                       </label>
                       <label className="text-[14px] font-medium text-white/55">
                         Nacionalidad de la persona
